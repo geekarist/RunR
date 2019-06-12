@@ -1,11 +1,12 @@
 package me.cpele.runr.ui.main
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
+import kotlinx.android.synthetic.main.main_fragment.*
 import me.cpele.runr.R
 
 class MainFragment : Fragment() {
@@ -25,8 +26,10 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
+        viewModel = ViewModelProviders.of(
+            this,
+            CustomApp.instance.mainViewModelFactory
+        ).get(MainViewModel::class.java)
+        main_start_run_button.setOnClickListener { viewModel.onStartRunClicked() }
     }
-
 }
