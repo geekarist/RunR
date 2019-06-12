@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RunR</string>
+    <string name="main_start_run">Start Run</string>
 </resources>
