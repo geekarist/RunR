@@ -1,4 +1,4 @@
-package me.cpele.runr.ui.main
+package me.cpele.runr
 
 import android.app.Application
 
@@ -10,7 +10,13 @@ class CustomApp : Application() {
     private val player = Player()
 
     val mainViewModelFactory =
-        ViewModelFactory { MainViewModel(trackRepository, playlistRepository, player) }
+        ViewModelFactory {
+            MainViewModel(
+                trackRepository,
+                playlistRepository,
+                player
+            )
+        }
 
     override fun onCreate() {
         super.onCreate()

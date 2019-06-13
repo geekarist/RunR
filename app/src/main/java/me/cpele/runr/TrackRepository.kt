@@ -1,4 +1,4 @@
-package me.cpele.runr.ui.main
+package me.cpele.runr
 
 import android.util.Log
 
