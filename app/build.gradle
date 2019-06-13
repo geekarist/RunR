@@ -4,6 +4,12 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+static String privatePropVal(String name) {
+    Properties properties = new Properties()
+    properties.load(new FileReader("private/private.properties"))
+    return "\"${properties.get(name)}\""
+}
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -13,6 +19,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "SPOTIFY_CLIENT_ID", "${privatePropVal('spotify.client.id')}")
     }
     buildTypes {
         release {
@@ -25,7 +32,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1'
 
     implementation 'androidx.appcompat:appcompat:1.0.2'
