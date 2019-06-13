@@ -32,10 +32,20 @@ class LoginActivity : AppCompatActivity() {
             val authResponse = AuthenticationClient.getResponse(resultCode, data)
             when (authResponse.type) {
                 AuthenticationResponse.Type.TOKEN -> sendTokenThenFinish(authResponse.accessToken)
-                AuthenticationResponse.Type.ERROR -> TODO()
+                AuthenticationResponse.Type.ERROR -> sendErrorThenFinish(authResponse.error)
                 else -> TODO()
             }
         }
+    }
+
+    private fun sendErrorThenFinish(error: String?) {
+        LocalBroadcastManager.getInstance(this).sendBroadcast(
+            Intent("ACTION_SPOTIFY_LOGIN").putExtra(
+                "EXTRA_SPOTIFY_ERROR",
+                error
+            )
+        )
+        finish()
     }
 
     private fun sendTokenThenFinish(token: String) {

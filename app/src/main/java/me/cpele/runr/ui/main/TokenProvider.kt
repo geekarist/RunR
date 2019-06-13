@@ -18,10 +18,15 @@ class TokenProvider(private val application: Application) {
 
         val receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
-                intent?.getStringExtra("EXTRA_SPOTIFY_TOKEN")?.let { token ->
-                    continuation.resume(token)
-                } ?: run {
-                    continuation.resumeWithException(Exception("Token is null"))
+                when {
+                    intent?.hasExtra("EXTRA_SPOTIFY_TOKEN") == true ->
+                        continuation.resume(intent.getStringExtra("EXTRA_SPOTIFY_TOKEN"))
+                    intent?.hasExtra("EXTRA_SPOTIFY_ERROR") == true -> {
+                        val errorMsg = intent.getStringExtra("EXTRA_SPOTIFY_ERROR")
+                        val exception = Exception("Error: $errorMsg")
+                        continuation.resumeWithException(exception)
+                    }
+                    else -> continuation.resumeWithException(Exception())
                 }
             }
         }
