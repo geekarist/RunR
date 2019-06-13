@@ -4,7 +4,8 @@ import android.app.Application
 
 class CustomApp : Application() {
 
-    private val trackRepository = TrackRepository()
+    private val tokenProvider = TokenProvider(this)
+    private val trackRepository = TrackRepository(tokenProvider)
     private val playlistRepository = PlaylistRepository()
     private val player = Player()
 
