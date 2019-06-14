@@ -16,6 +16,7 @@ class TokenProvider(private val application: Application) {
 
         application.startActivity(Intent(application, LoginActivity::class.java))
 
+        val broadcastManager = LocalBroadcastManager.getInstance(application)
         val receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 when {
@@ -28,10 +29,10 @@ class TokenProvider(private val application: Application) {
                     }
                     else -> continuation.resumeWithException(Exception())
                 }
+                broadcastManager.unregisterReceiver(this)
             }
         }
 
-        val broadcastManager = LocalBroadcastManager.getInstance(application)
         val filter = IntentFilter("ACTION_SPOTIFY_LOGIN")
         broadcastManager.registerReceiver(receiver, filter)
 
