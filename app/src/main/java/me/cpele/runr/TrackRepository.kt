@@ -20,6 +20,8 @@ class TrackRepository(
             "Found ${recommendations.tracks.size} tracks: $recommendations"
         )
         Log.d(javaClass.simpleName, "Spotify auth token: $token")
-        return listOf()
+        return recommendations.tracks.map {
+            TrackBo(it.id, it.name)
+        }
     }
 }

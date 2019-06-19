@@ -22,4 +22,11 @@ interface SpotifyService {
         @Path("user_id") userId: String,
         @Body request: SpotifyPlaylistCreateRequest
     ): SpotifyPlaylist
+
+    @POST("/v1/playlists/{playlist_id}/tracks")
+    suspend fun postTracks(
+        @Header("Authorization") authorization: String,
+        @Path("playlist_id") playlistId: String,
+        @Body uris: SpotifyTracksPostRequest
+    )
 }

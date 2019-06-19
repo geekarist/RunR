@@ -1,5 +1,3 @@
 package me.cpele.runr
 
-class TrackBo {
-
-}
+data class TrackBo(val id: String, val name: String)

@@ -1,5 +1,3 @@
 package me.cpele.runr
 
-class PlaylistBo(tracks: List<TrackBo>) {
-
-}
+class PlaylistBo(val tracks: List<TrackBo>)
