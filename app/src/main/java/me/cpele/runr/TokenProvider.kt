@@ -14,7 +14,12 @@ class TokenProvider(private val application: Application) {
 
     suspend fun get(): String = suspendCancellableCoroutine { continuation ->
 
-        application.startActivity(Intent(application, LoginActivity::class.java))
+        application.startActivity(
+            Intent(
+                application,
+                LoginActivity::class.java
+            ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        )
 
         val broadcastManager = LocalBroadcastManager.getInstance(application)
         val receiver = object : BroadcastReceiver() {
