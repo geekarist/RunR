@@ -12,8 +12,7 @@ class MainViewModel(
 
     fun onStartRunClicked() = viewModelScope.launch {
         val tracks = trackRepository.findByPace(100)
-        val playlist = PlaylistBo(tracks)
-        playlistRepository.insert(playlist)
+        val playlist = playlistRepository.create(tracks)
         player.play(playlist)
     }
 }

@@ -24,7 +24,8 @@ class CustomApp : Application() {
     private val tokenProvider = TokenProvider(this)
     private val trackRepository = TrackRepository(tokenProvider, spotifyService)
     private val playlistRepository = PlaylistRepository(spotifyService, tokenProvider)
-    private val player = Player()
+    private val spotifyAppRemoteProvider = SpotifyAppRemoteProvider(this)
+    private val player = Player(spotifyAppRemoteProvider)
 
     val mainViewModelFactory =
         ViewModelFactory {

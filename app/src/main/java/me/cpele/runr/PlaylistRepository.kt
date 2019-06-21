@@ -7,7 +7,7 @@ class PlaylistRepository(
     private val spotifyService: SpotifyService,
     private val tokenProvider: TokenProvider
 ) {
-    suspend fun insert(playlist: PlaylistBo) {
+    suspend fun create(tracks: List<TrackBo>): PlaylistBo {
         val token = tokenProvider.get()
         val authorization = "Bearer $token"
 
@@ -16,18 +16,20 @@ class PlaylistRepository(
         val userId = profile.id
         Log.d(javaClass.simpleName, "User ID is $userId")
 
-        Log.d(javaClass.simpleName, "Insert playlist")
+        Log.d(javaClass.simpleName, "Insert tracks")
         val spotifyPlaylist = spotifyService.postPlaylist(
             authorization = authorization,
             userId = userId,
             request = SpotifyPlaylistCreateRequest(name = UUID.randomUUID().toString())
         )
 
-        Log.d(javaClass.simpleName, "Add tracks to playlist")
+        Log.d(javaClass.simpleName, "Add tracks to tracks")
         spotifyService.postTracks(
             authorization = authorization,
             playlistId = spotifyPlaylist.id,
-            uris = SpotifyTracksPostRequest(playlist.tracks.map { "spotify:track:${it.id}" })
+            uris = SpotifyTracksPostRequest(tracks.map { "spotify:track:${it.id}" })
         )
+
+        return PlaylistBo(spotifyPlaylist.id, tracks)
     }
 }

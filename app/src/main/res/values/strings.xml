@@ -2,4 +2,6 @@
     <string name="app_name">RunR</string>
     <string name="main_start_run">Start Run</string>
     <string name="login_please_wait">Logging in…</string>
+
+    <string name="conf_redirect_uri">me.cpele.runr://spotify-redirect</string>
 </resources>

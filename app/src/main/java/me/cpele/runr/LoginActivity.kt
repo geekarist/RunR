@@ -13,7 +13,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         val clientId = BuildConfig.SPOTIFY_CLIENT_ID
-        val redirectUri = "me.cpele.runr://spotify-redirect"
+        val redirectUri = getString(R.string.conf_redirect_uri)
         val scopes = arrayOf("user-read-private", "app-remote-control", "playlist-modify-public")
         val request = AuthenticationRequest.Builder(
             clientId,

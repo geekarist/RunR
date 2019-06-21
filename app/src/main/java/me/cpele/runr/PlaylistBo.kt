@@ -1,3 +1,3 @@
 package me.cpele.runr
 
-class PlaylistBo(val tracks: List<TrackBo>)
+class PlaylistBo(val id: String, val tracks: List<TrackBo>)
