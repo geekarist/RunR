@@ -4,9 +4,9 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-static String privatePropVal(String name) {
+static String privatePropVal(String rootDir, String name) {
     Properties properties = new Properties()
-    properties.load(new FileReader("private/private.properties"))
+    properties.load(new FileReader("${rootDir}/private/private.properties"))
     return "\"${properties.get(name)}\""
 }
 
@@ -19,7 +19,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "SPOTIFY_CLIENT_ID", "${privatePropVal('spotify.client.id')}")
+        buildConfigField("String", "SPOTIFY_CLIENT_ID", "${privatePropVal(rootDir.path, 'spotify.client.id')}")
     }
     buildTypes {
         release {
