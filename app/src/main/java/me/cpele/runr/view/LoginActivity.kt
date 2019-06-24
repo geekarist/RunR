@@ -11,6 +11,7 @@ import me.cpele.runr.BuildConfig
 import me.cpele.runr.R
 
 class LoginActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -22,13 +23,13 @@ class LoginActivity : AppCompatActivity() {
             AuthenticationResponse.Type.TOKEN,
             redirectUri
         ).setScopes(scopes).build()
-        AuthenticationClient.openLoginActivity(this, 42, request)
+        AuthenticationClient.openLoginActivity(this, REQUEST_CODE_LOGIN, request)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 42) {
+        if (requestCode == REQUEST_CODE_LOGIN) {
             val authResponse = AuthenticationClient.getResponse(resultCode, data)
             when (authResponse.type) {
                 AuthenticationResponse.Type.TOKEN -> sendTokenThenFinish(authResponse.accessToken)
@@ -56,5 +57,9 @@ class LoginActivity : AppCompatActivity() {
             )
         )
         finish()
+    }
+
+    companion object {
+        private const val REQUEST_CODE_LOGIN = 42
     }
 }
