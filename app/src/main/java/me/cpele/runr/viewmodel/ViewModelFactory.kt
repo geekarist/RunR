@@ -1,4 +1,4 @@
-package me.cpele.runr
+package me.cpele.runr.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

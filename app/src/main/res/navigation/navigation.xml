@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="me.cpele.runr.MainFragment"
+        android:name="me.cpele.runr.view.MainFragment"
         android:label="main_fragment"
         tools:layout="@layout/main_fragment" />
 </navigation>

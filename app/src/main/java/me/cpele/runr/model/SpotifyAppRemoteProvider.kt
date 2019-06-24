@@ -1,10 +1,12 @@
-package me.cpele.runr
+package me.cpele.runr.model
 
 import android.content.Context
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
 import kotlinx.coroutines.suspendCancellableCoroutine
+import me.cpele.runr.BuildConfig
+import me.cpele.runr.R
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 

@@ -1,4 +1,4 @@
-package me.cpele.runr
+package me.cpele.runr.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
+import me.cpele.runr.BuildConfig
+import me.cpele.runr.R
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

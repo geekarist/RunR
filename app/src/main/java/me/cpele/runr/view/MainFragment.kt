@@ -1,4 +1,4 @@
-package me.cpele.runr
+package me.cpele.runr.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.main_fragment.*
+import me.cpele.runr.CustomApp
+import me.cpele.runr.R
+import me.cpele.runr.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
 

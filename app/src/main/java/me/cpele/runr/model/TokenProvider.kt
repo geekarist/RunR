@@ -1,4 +1,4 @@
-package me.cpele.runr
+package me.cpele.runr.model
 
 import android.app.Application
 import android.content.BroadcastReceiver
@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import kotlinx.coroutines.suspendCancellableCoroutine
+import me.cpele.runr.view.LoginActivity
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
