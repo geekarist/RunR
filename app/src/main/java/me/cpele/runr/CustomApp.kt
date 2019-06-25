@@ -1,11 +1,12 @@
 package me.cpele.runr
 
 import android.app.Application
-import me.cpele.runr.model.Player
+import me.cpele.runr.domain.StartRunUseCase
 import me.cpele.runr.model.SpotifyAppRemoteProvider
+import me.cpele.runr.model.SpotifyPlayer
 import me.cpele.runr.model.TokenProvider
-import me.cpele.runr.model.data.PlaylistRepository
-import me.cpele.runr.model.data.TrackRepository
+import me.cpele.runr.model.data.SpotifyPlaylistRepository
+import me.cpele.runr.model.data.SpotifyTrackRepository
 import me.cpele.runr.model.network.SpotifyService
 import me.cpele.runr.viewmodel.MainViewModel
 import me.cpele.runr.viewmodel.ViewModelFactory
@@ -31,20 +32,14 @@ class CustomApp : Application() {
             .create(SpotifyService::class.java)
     private val tokenProvider = TokenProvider(this)
     private val trackRepository =
-        TrackRepository(tokenProvider, spotifyService)
+        SpotifyTrackRepository(tokenProvider, spotifyService)
     private val playlistRepository =
-        PlaylistRepository(spotifyService, tokenProvider)
+        SpotifyPlaylistRepository(spotifyService, tokenProvider)
     private val spotifyAppRemoteProvider = SpotifyAppRemoteProvider(this)
-    private val player = Player(spotifyAppRemoteProvider)
+    private val player = SpotifyPlayer(spotifyAppRemoteProvider)
+    private val startRunUseCase = StartRunUseCase(trackRepository, playlistRepository, player)
 
-    val mainViewModelFactory =
-        ViewModelFactory {
-            MainViewModel(
-                trackRepository,
-                playlistRepository,
-                player
-            )
-        }
+    val mainViewModelFactory = ViewModelFactory { MainViewModel(startRunUseCase) }
 
     override fun onCreate() {
         super.onCreate()

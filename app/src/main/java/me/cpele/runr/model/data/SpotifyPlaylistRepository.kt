@@ -1,17 +1,18 @@
 package me.cpele.runr.model.data
 
 import android.util.Log
+import me.cpele.runr.domain.PlaylistRepository
 import me.cpele.runr.model.TokenProvider
 import me.cpele.runr.model.network.SpotifyPlaylistCreateRequest
 import me.cpele.runr.model.network.SpotifyService
 import me.cpele.runr.model.network.SpotifyTracksPostRequest
 import java.util.*
 
-class PlaylistRepository(
+class SpotifyPlaylistRepository(
     private val spotifyService: SpotifyService,
     private val tokenProvider: TokenProvider
-) {
-    suspend fun create(tracks: List<TrackBo>): PlaylistBo {
+) : PlaylistRepository {
+    override suspend fun create(tracks: List<TrackBo>): PlaylistBo {
         val token = tokenProvider.get()
         val authorization = "Bearer $token"
 
