@@ -10,7 +10,7 @@ import com.spotify.sdk.android.authentication.AuthenticationResponse
 import me.cpele.runr.BuildConfig
 import me.cpele.runr.R
 
-class LoginActivity : AppCompatActivity() {
+class SpotifyLoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,29 +31,15 @@ class LoginActivity : AppCompatActivity() {
 
         if (requestCode == REQUEST_CODE_LOGIN) {
             val authResponse = AuthenticationClient.getResponse(resultCode, data)
-            when (authResponse.type) {
-                AuthenticationResponse.Type.TOKEN -> sendTokenThenFinish(authResponse.accessToken)
-                AuthenticationResponse.Type.ERROR -> sendErrorThenFinish(authResponse.error)
-                else -> TODO()
-            }
+            sendAuthStateThenFinish(authResponse)
         }
     }
 
-    private fun sendErrorThenFinish(error: String?) {
+    private fun sendAuthStateThenFinish(authResponse: AuthenticationResponse?) {
         LocalBroadcastManager.getInstance(this).sendBroadcast(
-            Intent("ACTION_SPOTIFY_LOGIN").putExtra(
-                "EXTRA_SPOTIFY_ERROR",
-                error
-            )
-        )
-        finish()
-    }
-
-    private fun sendTokenThenFinish(token: String) {
-        LocalBroadcastManager.getInstance(this).sendBroadcast(
-            Intent("ACTION_SPOTIFY_LOGIN").putExtra(
-                "EXTRA_SPOTIFY_TOKEN",
-                token
+            Intent(ACTION_SPOTIFY_LOGIN).putExtra(
+                EXTRA_SPOTIFY_AUTH_RESPONSE,
+                authResponse
             )
         )
         finish()
@@ -61,5 +47,7 @@ class LoginActivity : AppCompatActivity() {
 
     companion object {
         private const val REQUEST_CODE_LOGIN = 42
+        const val ACTION_SPOTIFY_LOGIN = "ACTION_SPOTIFY_LOGIN"
+        const val EXTRA_SPOTIFY_AUTH_RESPONSE = "EXTRA_SPOTIFY_AUTH_RESPONSE"
     }
 }

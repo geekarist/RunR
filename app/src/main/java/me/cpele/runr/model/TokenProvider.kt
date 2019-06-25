@@ -6,8 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.spotify.sdk.android.authentication.AuthenticationResponse
 import kotlinx.coroutines.suspendCancellableCoroutine
-import me.cpele.runr.view.LoginActivity
+import me.cpele.runr.view.SpotifyLoginActivity
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -18,28 +19,32 @@ class TokenProvider(private val application: Application) {
         application.startActivity(
             Intent(
                 application,
-                LoginActivity::class.java
+                SpotifyLoginActivity::class.java
             ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         )
 
         val broadcastManager = LocalBroadcastManager.getInstance(application)
         val receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
+                val authResponse: AuthenticationResponse? =
+                    intent?.getParcelableExtra(SpotifyLoginActivity.EXTRA_SPOTIFY_AUTH_RESPONSE)
                 when {
-                    intent?.hasExtra("EXTRA_SPOTIFY_TOKEN") == true ->
-                        continuation.resume(intent.getStringExtra("EXTRA_SPOTIFY_TOKEN"))
-                    intent?.hasExtra("EXTRA_SPOTIFY_ERROR") == true -> {
-                        val errorMsg = intent.getStringExtra("EXTRA_SPOTIFY_ERROR")
+                    authResponse?.accessToken != null ->
+                        continuation.resume(authResponse.accessToken)
+                    authResponse?.error != null -> {
+                        val errorMsg = authResponse.error
                         val exception = Exception("Error: $errorMsg")
                         continuation.resumeWithException(exception)
                     }
-                    else -> continuation.resumeWithException(Exception())
+                    else -> continuation.resumeWithException(
+                        Exception("Auth response is null or empty")
+                    )
                 }
                 broadcastManager.unregisterReceiver(this)
             }
         }
 
-        val filter = IntentFilter("ACTION_SPOTIFY_LOGIN")
+        val filter = IntentFilter(SpotifyLoginActivity.ACTION_SPOTIFY_LOGIN)
         broadcastManager.registerReceiver(receiver, filter)
 
         continuation.invokeOnCancellation { broadcastManager.unregisterReceiver(receiver) }
