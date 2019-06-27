@@ -1,8 +1,8 @@
 package me.cpele.runr.model.data
 
 import android.util.Log
+import me.cpele.runr.domain.TokenProvider
 import me.cpele.runr.domain.TrackRepository
-import me.cpele.runr.model.TokenProvider
 import me.cpele.runr.model.network.SpotifyService
 
 class SpotifyTrackRepository(

@@ -8,13 +8,14 @@ import android.content.IntentFilter
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.spotify.sdk.android.authentication.AuthenticationResponse
 import kotlinx.coroutines.suspendCancellableCoroutine
+import me.cpele.runr.domain.TokenProvider
 import me.cpele.runr.view.SpotifyLoginActivity
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-class TokenProvider(private val application: Application) {
+class SpotifyTokenProvider(private val application: Application) : TokenProvider {
 
-    suspend fun get(): String = suspendCancellableCoroutine { continuation ->
+    override suspend fun get(): String = suspendCancellableCoroutine { continuation ->
 
         application.startActivity(
             Intent(

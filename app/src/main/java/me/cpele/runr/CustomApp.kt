@@ -4,7 +4,7 @@ import android.app.Application
 import me.cpele.runr.domain.StartRunUseCase
 import me.cpele.runr.model.SpotifyAppRemoteProvider
 import me.cpele.runr.model.SpotifyPlayer
-import me.cpele.runr.model.TokenProvider
+import me.cpele.runr.model.SpotifyTokenProvider
 import me.cpele.runr.model.data.SpotifyPlaylistRepository
 import me.cpele.runr.model.data.SpotifyTrackRepository
 import me.cpele.runr.model.network.SpotifyService
@@ -30,7 +30,7 @@ class CustomApp : Application() {
             .client(httpClient)
             .build()
             .create(SpotifyService::class.java)
-    private val tokenProvider = TokenProvider(this)
+    private val tokenProvider = SpotifyTokenProvider(this)
     private val trackRepository =
         SpotifyTrackRepository(tokenProvider, spotifyService)
     private val playlistRepository =
