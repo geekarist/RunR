@@ -1,4 +1,4 @@
-package me.cpele.runr.model
+package me.cpele.runr.infra.model
 
 import android.content.Context
 import com.spotify.android.appremote.api.ConnectionParams

@@ -1,8 +1,8 @@
-package me.cpele.runr.model
+package me.cpele.runr.infra.model
 
 import android.util.Log
 import me.cpele.runr.domain.Player
-import me.cpele.runr.model.data.PlaylistBo
+import me.cpele.runr.domain.PlaylistBo
 
 class SpotifyPlayer(private val appRemoteProvider: SpotifyAppRemoteProvider) : Player {
     override suspend fun play(playlist: PlaylistBo) {

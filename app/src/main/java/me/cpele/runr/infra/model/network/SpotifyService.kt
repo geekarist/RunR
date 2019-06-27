@@ -1,4 +1,4 @@
-package me.cpele.runr.model.network
+package me.cpele.runr.infra.model.network
 
 import retrofit2.http.*
 

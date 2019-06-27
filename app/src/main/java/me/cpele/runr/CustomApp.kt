@@ -2,14 +2,14 @@ package me.cpele.runr
 
 import android.app.Application
 import me.cpele.runr.domain.StartRunUseCase
-import me.cpele.runr.model.SpotifyAppRemoteProvider
-import me.cpele.runr.model.SpotifyPlayer
-import me.cpele.runr.model.SpotifyTokenProvider
-import me.cpele.runr.model.data.SpotifyPlaylistRepository
-import me.cpele.runr.model.data.SpotifyTrackRepository
-import me.cpele.runr.model.network.SpotifyService
-import me.cpele.runr.viewmodel.MainViewModel
-import me.cpele.runr.viewmodel.ViewModelFactory
+import me.cpele.runr.infra.model.SpotifyAppRemoteProvider
+import me.cpele.runr.infra.model.SpotifyPlayer
+import me.cpele.runr.infra.model.SpotifyTokenProvider
+import me.cpele.runr.infra.model.data.SpotifyPlaylistRepository
+import me.cpele.runr.infra.model.data.SpotifyTrackRepository
+import me.cpele.runr.infra.model.network.SpotifyService
+import me.cpele.runr.infra.viewmodel.MainViewModel
+import me.cpele.runr.infra.viewmodel.ViewModelFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

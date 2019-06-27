@@ -1,4 +1,4 @@
-package me.cpele.runr.model
+package me.cpele.runr.infra.model
 
 import android.app.Application
 import android.content.BroadcastReceiver
@@ -9,7 +9,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.spotify.sdk.android.authentication.AuthenticationResponse
 import kotlinx.coroutines.suspendCancellableCoroutine
 import me.cpele.runr.domain.TokenProvider
-import me.cpele.runr.view.SpotifyLoginActivity
+import me.cpele.runr.infra.view.SpotifyLoginActivity
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 

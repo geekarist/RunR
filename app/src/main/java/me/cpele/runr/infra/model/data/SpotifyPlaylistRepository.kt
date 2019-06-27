@@ -1,11 +1,13 @@
-package me.cpele.runr.model.data
+package me.cpele.runr.infra.model.data
 
 import android.util.Log
+import me.cpele.runr.domain.PlaylistBo
 import me.cpele.runr.domain.PlaylistRepository
 import me.cpele.runr.domain.TokenProvider
-import me.cpele.runr.model.network.SpotifyPlaylistCreateRequest
-import me.cpele.runr.model.network.SpotifyService
-import me.cpele.runr.model.network.SpotifyTracksPostRequest
+import me.cpele.runr.domain.TrackBo
+import me.cpele.runr.infra.model.network.SpotifyPlaylistCreateRequest
+import me.cpele.runr.infra.model.network.SpotifyService
+import me.cpele.runr.infra.model.network.SpotifyTracksPostRequest
 import java.util.*
 
 class SpotifyPlaylistRepository(

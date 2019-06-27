@@ -1,4 +1,4 @@
-package me.cpele.runr.view
+package me.cpele.runr.infra.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
