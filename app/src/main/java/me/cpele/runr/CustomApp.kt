@@ -1,11 +1,13 @@
 package me.cpele.runr
 
 import android.app.Application
+import com.google.gson.Gson
 import me.cpele.runr.domain.StartRunUseCase
 import me.cpele.runr.domain.TokenProvider
 import me.cpele.runr.infra.model.SpotifyAppRemoteProvider
 import me.cpele.runr.infra.model.SpotifyAuthorizationAsync
 import me.cpele.runr.infra.model.SpotifyPlayer
+import me.cpele.runr.infra.model.data.PrefAuthResponseRepository
 import me.cpele.runr.infra.model.data.SpotifyPlaylistRepository
 import me.cpele.runr.infra.model.data.SpotifyTrackRepository
 import me.cpele.runr.infra.model.network.SpotifyService
@@ -31,7 +33,10 @@ class CustomApp : Application() {
             .client(httpClient)
             .build()
             .create(SpotifyService::class.java)
-    private val tokenProvider = TokenProvider(SpotifyAuthorizationAsync(this))
+    private val tokenProvider = TokenProvider(
+        SpotifyAuthorizationAsync(this),
+        PrefAuthResponseRepository(Gson(), this)
+    )
     private val trackRepository =
         SpotifyTrackRepository(tokenProvider, spotifyService)
     private val playlistRepository =

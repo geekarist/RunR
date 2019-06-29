@@ -10,6 +10,7 @@ import com.spotify.sdk.android.authentication.AuthenticationResponse
 import me.cpele.runr.domain.AuthResponseBo
 import me.cpele.runr.domain.AuthorizationAsync
 import me.cpele.runr.infra.view.SpotifyLoginActivity
+import java.util.*
 
 class SpotifyAuthorizationAsync(
     private val application: Application
@@ -46,5 +47,10 @@ class SpotifyAuthorizationAsync(
     }
 
     private fun AuthenticationResponse.toBo(): AuthResponseBo? =
-        AuthResponseBo(accessToken, error)
+        AuthResponseBo(
+            accessToken = accessToken,
+            error = error,
+            issueDate = Date(),
+            expiresInSec = expiresIn
+        )
 }
