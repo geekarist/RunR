@@ -11,6 +11,7 @@ import me.cpele.runr.infra.model.data.PrefAuthResponseRepository
 import me.cpele.runr.infra.model.data.SpotifyPlaylistRepository
 import me.cpele.runr.infra.model.data.SpotifyTrackRepository
 import me.cpele.runr.infra.model.network.SpotifyService
+import me.cpele.runr.infra.viewmodel.RunningViewModel
 import me.cpele.runr.infra.viewmodel.StartRunViewModel
 import me.cpele.runr.infra.viewmodel.ViewModelFactory
 import okhttp3.OkHttpClient
@@ -46,6 +47,7 @@ class CustomApp : Application() {
     private val startRunUseCase = StartRunUseCase(trackRepository, playlistRepository, player)
 
     val mainViewModelFactory = ViewModelFactory { StartRunViewModel(startRunUseCase) }
+    val runningViewModelFactory = ViewModelFactory { RunningViewModel() }
 
     override fun onCreate() {
         super.onCreate()
