@@ -6,24 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import kotlinx.android.synthetic.main.main_fragment.*
+import androidx.navigation.fragment.findNavController
+import kotlinx.android.synthetic.main.start_run_fragment.*
 import me.cpele.runr.CustomApp
 import me.cpele.runr.R
-import me.cpele.runr.infra.viewmodel.MainViewModel
+import me.cpele.runr.infra.viewmodel.StartRunViewModel
 
-class MainFragment : Fragment() {
+class StartRunFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = StartRunFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: StartRunViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+        return inflater.inflate(R.layout.start_run_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -31,7 +32,10 @@ class MainFragment : Fragment() {
         viewModel = ViewModelProviders.of(
             this,
             CustomApp.instance.mainViewModelFactory
-        ).get(MainViewModel::class.java)
-        main_start_run_button.setOnClickListener { viewModel.onStartRunClicked() }
+        ).get(StartRunViewModel::class.java)
+        main_start_run_button.setOnClickListener {
+            viewModel.onStartRunClicked()
+            findNavController().navigate(R.id.action_startRunFragment_to_runningFragment)
+        }
     }
 }

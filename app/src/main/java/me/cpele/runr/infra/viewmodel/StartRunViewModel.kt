@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import me.cpele.runr.domain.StartRunUseCase
 
-class MainViewModel(
+class StartRunViewModel(
     private val startRunUseCase: StartRunUseCase
 ) : ViewModel() {
 
