@@ -5,6 +5,8 @@
 
     <string name="conf_redirect_uri">me.cpele.runr://spotify-redirect</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="running_decrease">-5</string>
+    <string name="running_steps_per_min">Steps/min.</string>
+    <string name="running_spm_increase">+5</string>
+    <string name="running_spm_default_value">\u2014</string>
 </resources>
