@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 
 class RunningViewModel : ViewModel() {
 
-    val viewState: LiveData<ViewState> =
-        MutableLiveData<ViewState>().apply { value = ViewState("140") }
+    val state: LiveData<State> =
+        MutableLiveData<State>().apply { value = State("140") }
 
-    data class ViewState(val stepsPerMinText: CharSequence)
+    data class State(val stepsPerMinText: CharSequence)
 }

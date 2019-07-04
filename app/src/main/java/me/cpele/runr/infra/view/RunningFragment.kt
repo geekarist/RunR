@@ -31,7 +31,7 @@ class RunningFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.viewState.observe(this, Observer {
+        viewModel.state.observe(this, Observer {
             running_spm_value.text = it.stepsPerMinText
         })
     }
