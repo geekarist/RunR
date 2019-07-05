@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.cpele.runr.domain.DecreasePaceUseCase
-import me.cpele.runr.domain.GetPaceUseCase
-import me.cpele.runr.domain.IncreasePaceUseCase
+import me.cpele.runr.domain.usecase.DecreasePaceUseCase
+import me.cpele.runr.domain.usecase.GetPaceUseCase
+import me.cpele.runr.domain.usecase.IncreasePaceUseCase
 
 class RunningViewModel(
     private val increasePaceUseCase: IncreasePaceUseCase,

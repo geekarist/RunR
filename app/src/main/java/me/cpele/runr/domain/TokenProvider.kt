@@ -1,6 +1,8 @@
 package me.cpele.runr.domain
 
 import kotlinx.coroutines.suspendCancellableCoroutine
+import me.cpele.runr.domain.iface.AuthResponseRepository
+import me.cpele.runr.domain.iface.AuthorizationAsync
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 

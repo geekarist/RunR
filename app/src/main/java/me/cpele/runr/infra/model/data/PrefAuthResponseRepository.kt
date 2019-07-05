@@ -3,8 +3,8 @@ package me.cpele.runr.infra.model.data
 import android.app.Application
 import android.preference.PreferenceManager
 import com.google.gson.Gson
-import me.cpele.runr.domain.AuthResponseBo
-import me.cpele.runr.domain.AuthResponseRepository
+import me.cpele.runr.domain.bo.AuthResponseBo
+import me.cpele.runr.domain.iface.AuthResponseRepository
 
 class PrefAuthResponseRepository(
     private val gson: Gson,

@@ -1,4 +1,6 @@
-package me.cpele.runr.domain
+package me.cpele.runr.domain.usecase
+
+import me.cpele.runr.domain.iface.PaceRepository
 
 class GetPaceUseCase(private val paceRepository: PaceRepository) {
 

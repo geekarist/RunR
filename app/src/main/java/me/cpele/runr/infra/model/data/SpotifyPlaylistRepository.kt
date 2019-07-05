@@ -1,10 +1,10 @@
 package me.cpele.runr.infra.model.data
 
 import android.util.Log
-import me.cpele.runr.domain.PlaylistBo
-import me.cpele.runr.domain.PlaylistRepository
 import me.cpele.runr.domain.TokenProvider
-import me.cpele.runr.domain.TrackBo
+import me.cpele.runr.domain.bo.PlaylistBo
+import me.cpele.runr.domain.bo.TrackBo
+import me.cpele.runr.domain.iface.PlaylistRepository
 import me.cpele.runr.infra.model.network.SpotifyPlaylistCreateRequest
 import me.cpele.runr.infra.model.network.SpotifyService
 import me.cpele.runr.infra.model.network.SpotifyTracksPostRequest

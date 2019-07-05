@@ -7,8 +7,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.spotify.sdk.android.authentication.AuthenticationResponse
-import me.cpele.runr.domain.AuthResponseBo
-import me.cpele.runr.domain.AuthorizationAsync
+import me.cpele.runr.domain.bo.AuthResponseBo
+import me.cpele.runr.domain.iface.AuthorizationAsync
 import me.cpele.runr.infra.view.SpotifyLoginActivity
 import java.util.*
 

@@ -1,4 +1,4 @@
-package me.cpele.runr.domain
+package me.cpele.runr.domain.bo
 
 import java.util.*
 import java.util.concurrent.TimeUnit

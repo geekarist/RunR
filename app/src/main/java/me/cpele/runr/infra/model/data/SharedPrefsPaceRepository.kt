@@ -2,9 +2,10 @@ package me.cpele.runr.infra.model.data
 
 import android.app.Application
 import android.preference.PreferenceManager
-import me.cpele.runr.domain.PaceRepository
+import me.cpele.runr.domain.iface.PaceRepository
 
-class SharedPrefsPaceRepository(private val app: Application) : PaceRepository {
+class SharedPrefsPaceRepository(private val app: Application) :
+    PaceRepository {
 
     override fun get(): Int {
         return PreferenceManager.getDefaultSharedPreferences(app).getInt(PREF_PACE, DEFAULT_PACE)
