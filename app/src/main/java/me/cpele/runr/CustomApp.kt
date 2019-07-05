@@ -2,12 +2,15 @@ package me.cpele.runr
 
 import android.app.Application
 import com.google.gson.Gson
+import me.cpele.runr.domain.GetPaceUseCase
+import me.cpele.runr.domain.IncreasePaceUseCase
 import me.cpele.runr.domain.StartRunUseCase
 import me.cpele.runr.domain.TokenProvider
 import me.cpele.runr.infra.model.SpotifyAppRemoteProvider
 import me.cpele.runr.infra.model.SpotifyAuthorizationAsync
 import me.cpele.runr.infra.model.SpotifyPlayer
 import me.cpele.runr.infra.model.data.PrefAuthResponseRepository
+import me.cpele.runr.infra.model.data.SharedPrefsPaceRepository
 import me.cpele.runr.infra.model.data.SpotifyPlaylistRepository
 import me.cpele.runr.infra.model.data.SpotifyTrackRepository
 import me.cpele.runr.infra.model.network.SpotifyService
@@ -19,7 +22,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class CustomApp : Application() {
+class CustomApp() : Application() {
 
     private val httpClient = OkHttpClient.Builder()
         .addInterceptor(
@@ -42,12 +45,20 @@ class CustomApp : Application() {
         SpotifyTrackRepository(tokenProvider, spotifyService)
     private val playlistRepository =
         SpotifyPlaylistRepository(spotifyService, tokenProvider)
+    private val paceRepository = SharedPrefsPaceRepository(this)
     private val spotifyAppRemoteProvider = SpotifyAppRemoteProvider(this)
     private val player = SpotifyPlayer(spotifyAppRemoteProvider)
     private val startRunUseCase = StartRunUseCase(trackRepository, playlistRepository, player)
+    private val increasePaceUseCase = IncreasePaceUseCase(paceRepository)
+    private val getPaceUseCase = GetPaceUseCase(paceRepository)
 
     val mainViewModelFactory = ViewModelFactory { StartRunViewModel(startRunUseCase) }
-    val runningViewModelFactory = ViewModelFactory { RunningViewModel() }
+    val runningViewModelFactory = ViewModelFactory {
+        RunningViewModel(
+            increasePaceUseCase = increasePaceUseCase,
+            getPaceUseCase = getPaceUseCase
+        )
+    }
 
     override fun onCreate() {
         super.onCreate()

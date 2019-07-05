@@ -32,7 +32,9 @@ class RunningFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.state.observe(this, Observer {
-            running_spm_value.text = it.stepsPerMinText
+            running_spm_value.text = it?.stepsPerMinText
         })
+
+        running_spm_increase.setOnClickListener { viewModel.onIncreasePace() }
     }
 }

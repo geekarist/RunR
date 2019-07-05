@@ -3,11 +3,36 @@ package me.cpele.runr.infra.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import me.cpele.runr.domain.GetPaceUseCase
+import me.cpele.runr.domain.IncreasePaceUseCase
 
-class RunningViewModel : ViewModel() {
+class RunningViewModel(
+    private val increasePaceUseCase: IncreasePaceUseCase,
+    private val getPaceUseCase: GetPaceUseCase
+) : ViewModel() {
 
-    val state: LiveData<State> =
-        MutableLiveData<State>().apply { value = State("140") }
+    private val _state = MutableLiveData<State>().apply { value = State() }
+    val state: LiveData<State> = _state
 
-    data class State(val stepsPerMinText: CharSequence)
+    data class State(val stepsPerMinText: String = "")
+
+    init {
+        viewModelScope.launch {
+            val response = getPaceUseCase.execute()
+            withContext(Dispatchers.Main) {
+                _state.value = _state.value?.copy(stepsPerMinText = response.paceStr)
+            }
+        }
+    }
+
+    fun onIncreasePace() = viewModelScope.launch {
+        val response = increasePaceUseCase.execute()
+        withContext(Dispatchers.Main) {
+            _state.value = _state.value?.copy(stepsPerMinText = response.newPaceStr)
+        }
+    }
 }
