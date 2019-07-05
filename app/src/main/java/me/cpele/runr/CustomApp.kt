@@ -2,10 +2,7 @@ package me.cpele.runr
 
 import android.app.Application
 import com.google.gson.Gson
-import me.cpele.runr.domain.GetPaceUseCase
-import me.cpele.runr.domain.IncreasePaceUseCase
-import me.cpele.runr.domain.StartRunUseCase
-import me.cpele.runr.domain.TokenProvider
+import me.cpele.runr.domain.*
 import me.cpele.runr.infra.model.SpotifyAppRemoteProvider
 import me.cpele.runr.infra.model.SpotifyAuthorizationAsync
 import me.cpele.runr.infra.model.SpotifyPlayer
@@ -50,13 +47,15 @@ class CustomApp() : Application() {
     private val player = SpotifyPlayer(spotifyAppRemoteProvider)
     private val startRunUseCase = StartRunUseCase(trackRepository, playlistRepository, player)
     private val increasePaceUseCase = IncreasePaceUseCase(paceRepository)
+    private val decreasePaceUseCase = DecreasePaceUseCase(paceRepository)
     private val getPaceUseCase = GetPaceUseCase(paceRepository)
 
     val mainViewModelFactory = ViewModelFactory { StartRunViewModel(startRunUseCase) }
     val runningViewModelFactory = ViewModelFactory {
         RunningViewModel(
             increasePaceUseCase = increasePaceUseCase,
-            getPaceUseCase = getPaceUseCase
+            getPaceUseCase = getPaceUseCase,
+            decreasePaceUseCase = decreasePaceUseCase
         )
     }
 
