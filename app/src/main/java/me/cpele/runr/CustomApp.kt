@@ -19,7 +19,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class CustomApp() : Application() {
+class CustomApp : Application() {
 
     private val httpClient = OkHttpClient.Builder()
         .addInterceptor(
@@ -46,8 +46,8 @@ class CustomApp() : Application() {
     private val spotifyAppRemoteProvider = SpotifyAppRemoteProvider(this)
     private val player = SpotifyPlayer(spotifyAppRemoteProvider)
     private val startRunUseCase = StartRunUseCase(trackRepository, playlistRepository, player)
-    private val increasePaceUseCase = IncreasePaceUseCase(paceRepository)
-    private val decreasePaceUseCase = DecreasePaceUseCase(paceRepository)
+    private val increasePaceUseCase = IncreasePaceUseCase(paceRepository, startRunUseCase)
+    private val decreasePaceUseCase = DecreasePaceUseCase(paceRepository, startRunUseCase)
     private val getPaceUseCase = GetPaceUseCase(paceRepository)
 
     val mainViewModelFactory = ViewModelFactory { StartRunViewModel(startRunUseCase) }

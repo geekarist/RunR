@@ -1,11 +1,15 @@
 package me.cpele.runr.domain
 
-class DecreasePaceUseCase(private val paceRepository: PaceRepository) {
+class DecreasePaceUseCase(
+    private val paceRepository: PaceRepository,
+    private val startRunUseCase: StartRunUseCase
+) {
 
-    fun execute(): Response {
+    suspend fun execute(): Response {
         val currentPace = paceRepository.get()
         val newPace = currentPace - PACE_DECREMENT
         paceRepository.set(newPace)
+        startRunUseCase.execute(newPace)
         return Response(newPace.toString(), newPace)
     }
 
