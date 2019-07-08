@@ -2,6 +2,7 @@ package me.cpele.runr
 
 import android.app.Application
 import com.google.gson.Gson
+import me.cpele.runr.domain.GetPlayerStateUseCase
 import me.cpele.runr.domain.TokenProvider
 import me.cpele.runr.domain.usecase.DecreasePaceUseCase
 import me.cpele.runr.domain.usecase.GetPaceUseCase
@@ -56,8 +57,14 @@ class CustomApp : Application() {
     private val decreasePaceUseCase =
         DecreasePaceUseCase(paceRepository, startRunUseCase)
     private val getPaceUseCase = GetPaceUseCase(paceRepository)
+    private val getPlayerStateUseCase = GetPlayerStateUseCase()
 
-    val mainViewModelFactory = ViewModelFactory { StartRunViewModel(startRunUseCase) }
+    val mainViewModelFactory = ViewModelFactory {
+        StartRunViewModel(
+            startRunUseCase,
+            getPlayerStateUseCase
+        )
+    }
     val runningViewModelFactory = ViewModelFactory {
         RunningViewModel(
             increasePaceUseCase = increasePaceUseCase,
