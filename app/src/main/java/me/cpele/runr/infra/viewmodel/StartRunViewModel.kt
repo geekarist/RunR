@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.cpele.runr.domain.GetPlayerStateUseCase
 import me.cpele.runr.domain.usecase.StartRunUseCase
 
@@ -18,8 +20,11 @@ class StartRunViewModel(
 
     init {
         viewModelScope.launch {
-            for (playerState in getPlayerStateUseCase.execute()) {
-                _state.value = _state.value?.copy(continueRunEnabled = playerState.isPlaying)
+            val playerStates = getPlayerStateUseCase.execute(this)
+            for (playState in playerStates) {
+                withContext(Dispatchers.Main) {
+                    _state.value = _state.value?.copy(continueRunEnabled = playState.isPlaying)
+                }
             }
         }
     }

@@ -1,20 +1,20 @@
 package me.cpele.runr.domain
 
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.delay
 import me.cpele.runr.domain.bo.PlayerStateBo
 
+@Suppress("EXPERIMENTAL_API_USAGE")
 class GetPlayerStateUseCase {
-    suspend fun execute(): Channel<PlayerStateBo> {
-        val channel = Channel<PlayerStateBo>()
+    fun execute(scope: CoroutineScope) = scope.produce {
         delay(2000)
-        channel.send(PlayerStateBo(true))
+        send(PlayerStateBo(true))
         delay(2000)
-        channel.send(PlayerStateBo(false))
+        send(PlayerStateBo(false))
         delay(2000)
-        channel.send(PlayerStateBo(true))
+        send(PlayerStateBo(true))
         delay(2000)
-        return channel
+        close()
     }
-
 }
