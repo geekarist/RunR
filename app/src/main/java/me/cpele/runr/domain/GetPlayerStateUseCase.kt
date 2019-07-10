@@ -2,18 +2,17 @@ package me.cpele.runr.domain
 
 import kotlinx.coroutines.channels.Channel
 import me.cpele.runr.domain.bo.PlayerStateBo
-import me.cpele.runr.infra.model.SpotifyAppRemoteProvider
+import me.cpele.runr.domain.iface.Player
 
 @Suppress("EXPERIMENTAL_API_USAGE")
 class GetPlayerStateUseCase(
-    private val appRemoteProvider: SpotifyAppRemoteProvider
+    private val player: Player
 ) {
     suspend fun execute(): Channel<PlayerStateBo> {
         return Channel<PlayerStateBo>().apply {
-            val appRemote = appRemoteProvider.get()
-            val subscription = appRemote.playerApi.subscribeToPlayerState()
-            subscription.setEventCallback {
-                offer(PlayerStateBo(!it.isPaused))
+            val subscription = player.subscribeToState()
+            subscription.setEventCallback { isPaused ->
+                offer(PlayerStateBo(!isPaused))
             }
             invokeOnClose { subscription.cancel() }
         }
