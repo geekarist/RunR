@@ -37,6 +37,10 @@ class StartRunFragment : Fragment() {
             findNavController().navigate(R.id.action_startRunFragment_to_runningFragment)
         }
 
+        main_continue_run_button.setOnClickListener {
+            findNavController().navigate(R.id.action_startRunFragment_to_runningFragment)
+        }
+
         viewModel.state.observe(this, Observer {
             main_continue_run_button.isEnabled = it.continueRunEnabled
         })
