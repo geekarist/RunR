@@ -5,9 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.cpele.runr.domain.GetPlayerStateUseCase
+import me.cpele.runr.domain.bo.PlayerStateBo
 import me.cpele.runr.domain.usecase.StartRunUseCase
 
 class StartRunViewModel(
@@ -15,12 +17,14 @@ class StartRunViewModel(
     private val getPlayerStateUseCase: GetPlayerStateUseCase
 ) : ViewModel() {
 
+    private lateinit var playerStates: Channel<PlayerStateBo>
+
     private val _state = MutableLiveData<State>().apply { value = State(false) }
     val state: LiveData<State> = _state
 
     init {
         viewModelScope.launch {
-            val playerStates = getPlayerStateUseCase.execute(this)
+            playerStates = getPlayerStateUseCase.execute()
             for (playState in playerStates) {
                 withContext(Dispatchers.Main) {
                     _state.value = _state.value?.copy(continueRunEnabled = playState.isPlaying)
@@ -31,6 +35,11 @@ class StartRunViewModel(
 
     fun onStartRunClicked() = viewModelScope.launch {
         startRunUseCase.execute(100)
+    }
+
+    override fun onCleared() {
+        playerStates.close()
+        super.onCleared()
     }
 
     data class State(val continueRunEnabled: Boolean)

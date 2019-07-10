@@ -1,20 +1,21 @@
 package me.cpele.runr.domain
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.produce
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.channels.Channel
 import me.cpele.runr.domain.bo.PlayerStateBo
+import me.cpele.runr.infra.model.SpotifyAppRemoteProvider
 
 @Suppress("EXPERIMENTAL_API_USAGE")
-class GetPlayerStateUseCase {
-    fun execute(scope: CoroutineScope) = scope.produce {
-        delay(2000)
-        send(PlayerStateBo(true))
-        delay(2000)
-        send(PlayerStateBo(false))
-        delay(2000)
-        send(PlayerStateBo(true))
-        delay(2000)
-        close()
+class GetPlayerStateUseCase(
+    private val appRemoteProvider: SpotifyAppRemoteProvider
+) {
+    suspend fun execute(): Channel<PlayerStateBo> {
+        return Channel<PlayerStateBo>().apply {
+            val appRemote = appRemoteProvider.get()
+            val subscription = appRemote.playerApi.subscribeToPlayerState()
+            subscription.setEventCallback {
+                offer(PlayerStateBo(!it.isPaused))
+            }
+            invokeOnClose { subscription.cancel() }
+        }
     }
 }

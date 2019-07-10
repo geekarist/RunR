@@ -57,7 +57,7 @@ class CustomApp : Application() {
     private val decreasePaceUseCase =
         DecreasePaceUseCase(paceRepository, startRunUseCase)
     private val getPaceUseCase = GetPaceUseCase(paceRepository)
-    private val getPlayerStateUseCase = GetPlayerStateUseCase()
+    private val getPlayerStateUseCase = GetPlayerStateUseCase(spotifyAppRemoteProvider)
 
     val mainViewModelFactory = ViewModelFactory {
         StartRunViewModel(
