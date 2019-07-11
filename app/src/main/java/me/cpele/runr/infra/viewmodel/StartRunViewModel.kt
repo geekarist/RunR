@@ -17,7 +17,7 @@ class StartRunViewModel(
     private val getPlayerStateUseCase: GetPlayerStateUseCase
 ) : ViewModel() {
 
-    private lateinit var playerStates: Channel<PlayerStateBo>
+    private var playerStates: Channel<PlayerStateBo>? = null
 
     private val _state = MutableLiveData<State>().apply { value = State(false) }
     val state: LiveData<State> = _state
@@ -25,9 +25,11 @@ class StartRunViewModel(
     init {
         viewModelScope.launch {
             playerStates = getPlayerStateUseCase.execute()
-            for (playState in playerStates) {
-                withContext(Dispatchers.Main) {
-                    _state.value = _state.value?.copy(continueRunEnabled = playState.isPlaying)
+            playerStates?.let { states ->
+                for (playState in states) {
+                    withContext(Dispatchers.Main) {
+                        _state.value = _state.value?.copy(continueRunEnabled = playState.isPlaying)
+                    }
                 }
             }
         }
@@ -38,7 +40,7 @@ class StartRunViewModel(
     }
 
     override fun onCleared() {
-        playerStates.close()
+        playerStates?.close()
         super.onCleared()
     }
 

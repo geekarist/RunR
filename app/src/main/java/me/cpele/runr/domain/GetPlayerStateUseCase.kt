@@ -10,6 +10,7 @@ class GetPlayerStateUseCase(
 ) {
     suspend fun execute(): Channel<PlayerStateBo> {
         val channel = Channel<PlayerStateBo>()
+        player.ensureReady()
         val subscription = player.subscribeToState()
         subscription.setEventCallback { isPaused ->
             channel.offer(PlayerStateBo(!isPaused))

@@ -4,9 +4,12 @@ import android.content.Context
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
+import com.spotify.android.appremote.api.error.NotLoggedInException
 import kotlinx.coroutines.suspendCancellableCoroutine
 import me.cpele.runr.BuildConfig
 import me.cpele.runr.R
+import me.cpele.runr.domain.LoggedOutException
+import me.cpele.runr.domain.MiscException
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -23,23 +26,25 @@ class SpotifyAppRemoteProvider(private val context: Context) {
         SpotifyAppRemote.connect(context, params, object : Connector.ConnectionListener {
 
             override fun onFailure(throwable: Throwable?) {
-                continuation.resumeWithException(
-                    Exception(
-                        "App remote connection failed",
-                        throwable
-                    )
-                )
+                continuation.resumeWithException(throwable.toCustomException())
             }
 
             override fun onConnected(remote: SpotifyAppRemote?) {
-                continuation.resume(
-                    remote
-                        ?: throw Exception("App remote connection succeeded but remote is null")
-                )
+                if (!continuation.isCompleted) {
+                    continuation.resume(
+                        remote
+                            ?: throw Exception("App remote connection succeeded but remote is null")
+                    )
+                }
             }
         })
 
         continuation.invokeOnCancellation { TODO() }
     }
 
+    private fun Throwable?.toCustomException(): Throwable =
+        when (this) {
+            is NotLoggedInException -> LoggedOutException(this)
+            else -> MiscException(this)
+        }
 }
