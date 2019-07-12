@@ -3,17 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation.xml"
-    app:startDestination="@id/startRunFragment">
+    app:startDestination="@id/runningFragment">
 
-    <fragment
-        android:id="@+id/startRunFragment"
-        android:name="me.cpele.runr.infra.view.StartRunFragment"
-        android:label="start_run_fragment"
-        tools:layout="@layout/start_run_fragment">
-        <action
-            android:id="@+id/action_startRunFragment_to_runningFragment"
-            app:destination="@id/runningFragment" />
-    </fragment>
     <fragment
         android:id="@+id/runningFragment"
         android:name="me.cpele.runr.infra.view.RunningFragment"
