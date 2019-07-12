@@ -14,7 +14,7 @@ class SpotifyPlayer(
     private val tokenProvider: TokenProvider
 ) : Player {
 
-    override suspend fun ensureReady() {
+    override suspend fun connect() {
         val loggedIn = try {
             val appRemote = appRemoteProvider.get()
             isLoggedIn(appRemote)
@@ -22,6 +22,10 @@ class SpotifyPlayer(
             false
         }
         if (!loggedIn) tokenProvider.forceRefresh()
+    }
+
+    override fun disconnect() {
+        appRemoteProvider.disconnect()
     }
 
     private suspend fun isLoggedIn(appRemote: SpotifyAppRemote): Boolean =

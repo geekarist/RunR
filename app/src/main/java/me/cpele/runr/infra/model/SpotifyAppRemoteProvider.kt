@@ -15,6 +15,8 @@ import kotlin.coroutines.resumeWithException
 
 class SpotifyAppRemoteProvider(private val context: Context) {
 
+    private var appRemote: SpotifyAppRemote? = null
+
     suspend fun get(): SpotifyAppRemote = suspendCancellableCoroutine { continuation ->
 
         val params = ConnectionParams.Builder(BuildConfig.SPOTIFY_CLIENT_ID)
@@ -23,6 +25,8 @@ class SpotifyAppRemoteProvider(private val context: Context) {
             .build()
 
         SpotifyAppRemote.setDebugMode(BuildConfig.DEBUG)
+
+        disconnect()
         SpotifyAppRemote.connect(context, params, object : Connector.ConnectionListener {
 
             override fun onFailure(throwable: Throwable?) {
@@ -31,6 +35,7 @@ class SpotifyAppRemoteProvider(private val context: Context) {
 
             override fun onConnected(remote: SpotifyAppRemote?) {
                 if (!continuation.isCompleted) {
+                    appRemote = remote
                     continuation.resume(
                         remote
                             ?: throw Exception("App remote connection succeeded but remote is null")
@@ -40,6 +45,11 @@ class SpotifyAppRemoteProvider(private val context: Context) {
         })
 
         continuation.invokeOnCancellation { TODO() }
+    }
+
+    fun disconnect() {
+        appRemote?.let { SpotifyAppRemote.disconnect(it) }
+        appRemote = null
     }
 
     private fun Throwable?.toCustomException(): Throwable =
