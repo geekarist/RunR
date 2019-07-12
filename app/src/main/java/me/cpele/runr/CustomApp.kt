@@ -47,7 +47,7 @@ class CustomApp : Application() {
         SpotifyPlaylistRepository(spotifyService, tokenProvider)
     private val paceRepository = SharedPrefsPaceRepository(this)
     private val spotifyAppRemoteProvider = SpotifyAppRemoteProvider(this)
-    private val player = SpotifyPlayer(spotifyAppRemoteProvider, tokenProvider)
+    private val player = SpotifyPlayer(spotifyAppRemoteProvider)
     private val startRunUseCase =
         StartRunUseCase(trackRepository, playlistRepository, player)
     private val increasePaceUseCase =
