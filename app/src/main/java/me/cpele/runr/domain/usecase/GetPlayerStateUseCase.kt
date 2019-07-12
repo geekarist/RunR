@@ -1,4 +1,4 @@
-package me.cpele.runr.domain
+package me.cpele.runr.domain.usecase
 
 import kotlinx.coroutines.channels.Channel
 import me.cpele.runr.domain.bo.PlayerStateBo

@@ -8,8 +8,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.cpele.runr.domain.GetPlayerStateUseCase
 import me.cpele.runr.domain.bo.PlayerStateBo
+import me.cpele.runr.domain.usecase.GetPlayerStateUseCase
 import me.cpele.runr.domain.usecase.StartRunUseCase
 
 class StartRunViewModel(

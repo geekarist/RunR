@@ -2,12 +2,8 @@ package me.cpele.runr
 
 import android.app.Application
 import com.google.gson.Gson
-import me.cpele.runr.domain.GetPlayerStateUseCase
 import me.cpele.runr.domain.TokenProvider
-import me.cpele.runr.domain.usecase.DecreasePaceUseCase
-import me.cpele.runr.domain.usecase.GetPaceUseCase
-import me.cpele.runr.domain.usecase.IncreasePaceUseCase
-import me.cpele.runr.domain.usecase.StartRunUseCase
+import me.cpele.runr.domain.usecase.*
 import me.cpele.runr.infra.model.SpotifyAppRemoteProvider
 import me.cpele.runr.infra.model.SpotifyAuthorizationAsync
 import me.cpele.runr.infra.model.SpotifyPlayer
