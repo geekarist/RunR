@@ -7,7 +7,6 @@ import me.cpele.runr.domain.usecase.DecreasePaceUseCase
 import me.cpele.runr.domain.usecase.GetPaceUseCase
 import me.cpele.runr.domain.usecase.IncreasePaceUseCase
 import me.cpele.runr.domain.usecase.StartRunUseCase
-import me.cpele.runr.infra.model.SpotifyAppRemoteProvider
 import me.cpele.runr.infra.model.SpotifyAuthorizationAsync
 import me.cpele.runr.infra.model.SpotifyPlayer
 import me.cpele.runr.infra.model.data.PrefAuthResponseRepository
@@ -46,8 +45,7 @@ class CustomApp : Application() {
     private val playlistRepository =
         SpotifyPlaylistRepository(spotifyService, tokenProvider)
     private val paceRepository = SharedPrefsPaceRepository(this)
-    private val spotifyAppRemoteProvider = SpotifyAppRemoteProvider(this)
-    private val player = SpotifyPlayer(spotifyAppRemoteProvider)
+    private val player = SpotifyPlayer(this)
     private val startRunUseCase =
         StartRunUseCase(trackRepository, playlistRepository, player)
     private val increasePaceUseCase =
