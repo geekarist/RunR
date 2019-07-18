@@ -5,6 +5,7 @@ import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
 import me.cpele.runr.BuildConfig
+import me.cpele.runr.R
 import me.cpele.runr.domain.TokenProvider
 import me.cpele.runr.domain.bo.PlaylistBo
 import me.cpele.runr.domain.iface.Player
@@ -32,12 +33,15 @@ class SpotifyPlayer(
     private suspend fun ensureRemoteConnected() = suspendCoroutine<Unit> { continuation ->
         if (appRemote?.isConnected == true) {
             continuation.resume(Unit)
+            return@suspendCoroutine
         }
 
         val params = ConnectionParams
             .Builder(BuildConfig.SPOTIFY_CLIENT_ID)
             .showAuthView(true)
+            .setRedirectUri(application.getString(R.string.conf_redirect_uri))
             .build()
+
         SpotifyAppRemote.connect(application, params, object : Connector.ConnectionListener {
             override fun onFailure(p0: Throwable?) {
                 continuation.resumeWithException(
@@ -53,6 +57,7 @@ class SpotifyPlayer(
     }
 
     private fun startPlaying(playlist: PlaylistBo) {
-        appRemote?.playerApi?.play(playlist.id) ?: throw Exception("Error playing: API is null")
+        appRemote?.playerApi?.play(playlist.id)
+            ?: throw Exception("Error playing: API is null")
     }
 }
