@@ -31,6 +31,9 @@ class SpotifyPlayer(
     }
 
     private suspend fun ensureRemoteConnected() = suspendCoroutine<Unit> { continuation ->
+
+        SpotifyAppRemote.setDebugMode(BuildConfig.DEBUG)
+
         if (appRemote?.isConnected == true) {
             continuation.resume(Unit)
             return@suspendCoroutine
@@ -57,7 +60,7 @@ class SpotifyPlayer(
     }
 
     private fun startPlaying(playlist: PlaylistBo) {
-        appRemote?.playerApi?.play(playlist.id)
+        appRemote?.playerApi?.play("spotify:playlist:${playlist.id}")
             ?: throw Exception("Error playing: API is null")
     }
 }
