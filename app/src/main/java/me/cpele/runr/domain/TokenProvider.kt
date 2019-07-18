@@ -10,13 +10,6 @@ class TokenProvider(
     private val authorization: AuthorizationAsync,
     private val authResponseRepository: AuthResponseRepository
 ) {
-    suspend fun forceRefresh(): Unit =
-        suspendCancellableCoroutine { continuation ->
-            authorization.start {
-                authResponseRepository.save(it)
-            }
-            continuation.invokeOnCancellation { authorization.cancel() }
-        }
 
     suspend fun get(): String {
 
