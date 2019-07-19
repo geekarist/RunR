@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import me.cpele.runr.CustomApp
 import me.cpele.runr.R
+import me.cpele.runr.infra.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 

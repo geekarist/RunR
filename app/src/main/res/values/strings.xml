@@ -12,4 +12,5 @@
     <string name="running_steps_per_min">Steps/min.</string>
     <string name="running_spm_increase">+5</string>
     <string name="running_spm_default_value">\u2014</string>
+    <string name="running_default_cover_desc">Current track cover</string>
 </resources>

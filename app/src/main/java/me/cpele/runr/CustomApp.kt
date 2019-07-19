@@ -14,7 +14,7 @@ import me.cpele.runr.infra.model.data.SharedPrefsPaceRepository
 import me.cpele.runr.infra.model.data.SpotifyPlaylistRepository
 import me.cpele.runr.infra.model.data.SpotifyTrackRepository
 import me.cpele.runr.infra.model.network.SpotifyService
-import me.cpele.runr.infra.view.MainViewModel
+import me.cpele.runr.infra.viewmodel.MainViewModel
 import me.cpele.runr.infra.viewmodel.RunningViewModel
 import me.cpele.runr.infra.viewmodel.ViewModelFactory
 import okhttp3.OkHttpClient

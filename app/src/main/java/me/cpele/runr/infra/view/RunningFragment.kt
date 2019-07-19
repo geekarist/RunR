@@ -1,6 +1,7 @@
 package me.cpele.runr.infra.view
 
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +34,7 @@ class RunningFragment : Fragment() {
 
         viewModel.state.observe(this, Observer {
             running_spm_value.text = it?.stepsPerMinText
+            running_track_cover.setImageURI(Uri.parse(it.coverUriStr))
         })
 
         running_spm_increase.setOnClickListener { viewModel.onIncreasePace() }

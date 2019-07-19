@@ -17,10 +17,13 @@ class RunningViewModel(
     private val decreasePaceUseCase: DecreasePaceUseCase
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<State>().apply { value = State() }
+    private val _state = MutableLiveData<State>().apply {
+        value =
+            State(coverUriStr = "https://img.discogs.com/4XvJZQu82IRMe_AqSaKHNiaHmEw=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-2105567-1364683794-9014.jpeg.jpg")
+    }
     val state: LiveData<State> = _state
 
-    data class State(val stepsPerMinText: String = "")
+    data class State(val stepsPerMinText: String = "", val coverUriStr: String?)
 
     init {
         viewModelScope.launch {

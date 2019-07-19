@@ -1,4 +1,4 @@
-package me.cpele.runr.infra.view
+package me.cpele.runr.infra.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
