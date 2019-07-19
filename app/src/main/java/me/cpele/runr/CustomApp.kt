@@ -14,6 +14,7 @@ import me.cpele.runr.infra.model.data.SharedPrefsPaceRepository
 import me.cpele.runr.infra.model.data.SpotifyPlaylistRepository
 import me.cpele.runr.infra.model.data.SpotifyTrackRepository
 import me.cpele.runr.infra.model.network.SpotifyService
+import me.cpele.runr.infra.view.MainViewModel
 import me.cpele.runr.infra.viewmodel.RunningViewModel
 import me.cpele.runr.infra.viewmodel.ViewModelFactory
 import okhttp3.OkHttpClient
@@ -45,7 +46,7 @@ class CustomApp : Application() {
     private val playlistRepository =
         SpotifyPlaylistRepository(spotifyService, tokenProvider)
     private val paceRepository = SharedPrefsPaceRepository(this)
-    private val player = SpotifyPlayer(this, tokenProvider)
+    val player = SpotifyPlayer(this, tokenProvider)
     private val startRunUseCase =
         StartRunUseCase(trackRepository, playlistRepository, player)
     private val increasePaceUseCase =
@@ -54,6 +55,7 @@ class CustomApp : Application() {
         DecreasePaceUseCase(paceRepository, startRunUseCase)
     private val getPaceUseCase = GetPaceUseCase(paceRepository)
 
+    val mainViewModelFactory = ViewModelFactory { MainViewModel(player) }
     val runningViewModelFactory = ViewModelFactory {
         RunningViewModel(
             increasePaceUseCase = increasePaceUseCase,

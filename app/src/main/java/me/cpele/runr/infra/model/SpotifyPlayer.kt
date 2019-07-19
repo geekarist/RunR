@@ -21,9 +21,13 @@ class SpotifyPlayer(
     private var appRemote: SpotifyAppRemote? = null
 
     override suspend fun play(playlist: PlaylistBo) {
+        connect()
+        startPlaying(playlist)
+    }
+
+    override suspend fun connect() {
         ensureUserConnected()
         ensureRemoteConnected()
-        startPlaying(playlist)
     }
 
     private suspend fun ensureUserConnected() {
@@ -62,5 +66,10 @@ class SpotifyPlayer(
     private fun startPlaying(playlist: PlaylistBo) {
         appRemote?.playerApi?.play("spotify:playlist:${playlist.id}")
             ?: throw Exception("Error playing: API is null")
+    }
+
+    override fun disconnect() {
+        appRemote?.let { SpotifyAppRemote.disconnect(it) }
+        appRemote = null
     }
 }
