@@ -19,7 +19,7 @@ class RunningViewModel(
 
     private val _state = MutableLiveData<State>().apply {
         value =
-            State(coverUriStr = "https://img.discogs.com/4XvJZQu82IRMe_AqSaKHNiaHmEw=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-2105567-1364683794-9014.jpeg.jpg")
+            State(coverUriStr = "http://slowwly.robertomurray.co.uk/delay/10000/url/https://img.discogs.com/4XvJZQu82IRMe_AqSaKHNiaHmEw=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-2105567-1364683794-9014.jpeg.jpg")
     }
     val state: LiveData<State> = _state
 
