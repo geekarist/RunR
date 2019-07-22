@@ -52,7 +52,7 @@ class RunningFragment : Fragment() {
     private fun loadCover(url: String?, target: ImageView, onLoadFinished: () -> Unit) {
         Glide.with(this)
             .load(url)
-            .timeout(20000)
+            .timeout(10000)
             .addListener(object : RequestListener<Drawable?> {
                 override fun onLoadFailed(
                     e: GlideException?,
