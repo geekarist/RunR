@@ -19,7 +19,7 @@ class RunningViewModel(
 
     private val _state = MutableLiveData<State>().apply {
         value =
-            State(coverUriStr = "http://slowwly.robertomurray.co.uk/delay/10000/url/https://img.discogs.com/4XvJZQu82IRMe_AqSaKHNiaHmEw=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-2105567-1364683794-9014.jpeg.jpg")
+            State(coverUriStr = "http://slowwly.robertomurray.co.uk/delay/5000/url/https://img.discogs.com/4XvJZQu82IRMe_AqSaKHNiaHmEw=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-2105567-1364683794-9014.jpeg.jpg")
     }
     val state: LiveData<State> = _state
 
@@ -28,23 +28,20 @@ class RunningViewModel(
     init {
         viewModelScope.launch {
             val response = getPaceUseCase.execute()
-            withContext(Dispatchers.Main) {
-                _state.value = _state.value?.copy(stepsPerMinText = response.paceStr)
-            }
+            val newValue = _state.value?.copy(stepsPerMinText = response.paceStr)
+            withContext(Dispatchers.Main) { _state.value = newValue }
         }
     }
 
     fun onIncreasePace() = viewModelScope.launch {
         val response = increasePaceUseCase.execute()
-        withContext(Dispatchers.Main) {
-            _state.value = _state.value?.copy(stepsPerMinText = response.newPaceStr)
-        }
+        val newValue = _state.value?.copy(stepsPerMinText = response.newPaceStr)
+        withContext(Dispatchers.Main) { _state.value = newValue }
     }
 
     fun onDecreasePace() = viewModelScope.launch {
         val response = decreasePaceUseCase.execute()
-        withContext(Dispatchers.Main) {
-            _state.value = _state.value?.copy(stepsPerMinText = response.newPaceStr)
-        }
+        val newValue = _state.value?.copy(stepsPerMinText = response.newPaceStr)
+        withContext(Dispatchers.Main) { _state.value = newValue }
     }
 }
