@@ -25,7 +25,7 @@ class SpotifyTrackRepository(
         )
         Log.d(javaClass.simpleName, "Spotify auth token: $token")
         return recommendations.tracks.map {
-            TrackBo(it.id, it.name)
+            TrackBo(it.id, it.name, it.album.images[0].url)
         }
     }
 }
