@@ -4,6 +4,8 @@ import android.app.Application
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import me.cpele.runr.BuildConfig
 import me.cpele.runr.R
 import me.cpele.runr.domain.TokenProvider
@@ -63,15 +65,17 @@ class SpotifyPlayer(
         })
     }
 
-    private fun startPlaying(playlist: PlaylistBo) {
-        appRemote?.playerApi
-            ?.play("spotify:playlist:${playlist.id}")
-            ?.await()
-            ?: throw Exception("Error playing: API is null")
+    private suspend fun startPlaying(playlist: PlaylistBo) {
+        withContext(Dispatchers.IO) {
+            appRemote?.playerApi
+                ?.play("spotify:playlist:${playlist.id}")
+                ?.await()
+                ?: throw Exception("Error playing: API is null")
+        }
     }
 
-    override val state: Player.State?
-        get() =
+    override suspend fun state(): Player.State? =
+        withContext(Dispatchers.IO) {
             appRemote
                 ?.playerApi
                 ?.playerState
@@ -83,6 +87,7 @@ class SpotifyPlayer(
                         result.error
                     )
                 }
+        }
 
     override fun disconnect() {
         appRemote?.let { SpotifyAppRemote.disconnect(it) }
