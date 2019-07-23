@@ -3,10 +3,7 @@ package me.cpele.runr
 import android.app.Application
 import com.google.gson.Gson
 import me.cpele.runr.domain.TokenProvider
-import me.cpele.runr.domain.usecase.DecreasePaceUseCase
-import me.cpele.runr.domain.usecase.GetPaceUseCase
-import me.cpele.runr.domain.usecase.IncreasePaceUseCase
-import me.cpele.runr.domain.usecase.StartRunUseCase
+import me.cpele.runr.domain.usecase.*
 import me.cpele.runr.infra.model.SpotifyAuthorizationAsync
 import me.cpele.runr.infra.model.SpotifyPlayer
 import me.cpele.runr.infra.model.data.PrefAuthResponseRepository
@@ -49,8 +46,9 @@ class CustomApp : Application() {
     val player = SpotifyPlayer(this, tokenProvider)
     private val startRunUseCase =
         StartRunUseCase(trackRepository, playlistRepository, player)
+    private val getPlayerStateUseCase = PlayerStateUseCase(player)
     private val increasePaceUseCase =
-        IncreasePaceUseCase(paceRepository, startRunUseCase)
+        IncreasePaceUseCase(paceRepository, startRunUseCase, getPlayerStateUseCase)
     private val decreasePaceUseCase =
         DecreasePaceUseCase(paceRepository, startRunUseCase)
     private val getPaceUseCase = GetPaceUseCase(paceRepository)

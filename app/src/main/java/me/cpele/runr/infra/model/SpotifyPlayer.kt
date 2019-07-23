@@ -64,9 +64,25 @@ class SpotifyPlayer(
     }
 
     private fun startPlaying(playlist: PlaylistBo) {
-        appRemote?.playerApi?.play("spotify:playlist:${playlist.id}")
+        appRemote?.playerApi
+            ?.play("spotify:playlist:${playlist.id}")
+            ?.await()
             ?: throw Exception("Error playing: API is null")
     }
+
+    override val state: Player.State?
+        get() =
+            appRemote
+                ?.playerApi
+                ?.playerState
+                ?.await()
+                ?.let { result ->
+                    Player.State(
+                        result.data.isPaused,
+                        result.data.track.imageUri.raw,
+                        result.error
+                    )
+                }
 
     override fun disconnect() {
         appRemote?.let { SpotifyAppRemote.disconnect(it) }

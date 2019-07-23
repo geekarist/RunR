@@ -35,11 +35,15 @@ class RunningViewModel(
 
     fun onIncreasePace() = viewModelScope.launch {
         val response = increasePaceUseCase.execute()
-        val newValue = _state.value?.copy(stepsPerMinText = response.newPaceStr)
+        val newValue = _state.value?.copy(
+            stepsPerMinText = response.newPaceStr,
+            coverUriStr = response.coverUrl
+        )
         withContext(Dispatchers.Main) { _state.value = newValue }
     }
 
     fun onDecreasePace() = viewModelScope.launch {
+        // TODO: Update cover
         val response = decreasePaceUseCase.execute()
         val newValue = _state.value?.copy(stepsPerMinText = response.newPaceStr)
         withContext(Dispatchers.Main) { _state.value = newValue }
