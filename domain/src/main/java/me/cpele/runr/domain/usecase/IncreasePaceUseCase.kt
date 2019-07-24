@@ -1,6 +1,5 @@
 package me.cpele.runr.domain.usecase
 
-import me.cpele.runr.domain.bo.PlayerStateBo
 import me.cpele.runr.domain.iface.PaceRepository
 
 
@@ -15,18 +14,15 @@ class IncreasePaceUseCase(
         val newPace = currentPace + PACE_INCREMENT
         paceRepository.set(newPace)
         startRunUseCase.execute(newPace)
-        val playerState: PlayerStateBo = getPlayerStateUseCase.execute()
         return Response(
             newPace.toString(),
-            newPace,
-            playerState.coverUrl
+            newPace
         )
     }
 
     class Response(
         val newPaceStr: String,
-        val newPace: Int,
-        val coverUrl: String?
+        val newPace: Int
     )
 
     companion object {

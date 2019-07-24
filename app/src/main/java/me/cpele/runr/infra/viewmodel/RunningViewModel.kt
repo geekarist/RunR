@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import me.cpele.runr.domain.EmitPlayerStateUseCase
 import me.cpele.runr.domain.usecase.DecreasePaceUseCase
 import me.cpele.runr.domain.usecase.GetPaceUseCase
 import me.cpele.runr.domain.usecase.IncreasePaceUseCase
@@ -14,7 +15,8 @@ import me.cpele.runr.domain.usecase.IncreasePaceUseCase
 class RunningViewModel(
     private val increasePaceUseCase: IncreasePaceUseCase,
     private val getPaceUseCase: GetPaceUseCase,
-    private val decreasePaceUseCase: DecreasePaceUseCase
+    private val decreasePaceUseCase: DecreasePaceUseCase,
+    val emitPlayerStateUseCase: EmitPlayerStateUseCase
 ) : ViewModel() {
 
     private val _state = MutableLiveData<State>().apply {
@@ -28,17 +30,20 @@ class RunningViewModel(
     init {
         viewModelScope.launch {
             val response = getPaceUseCase.execute()
-            val newValue = _state.value?.copy(stepsPerMinText = response.paceStr)
-            withContext(Dispatchers.Main) { _state.value = newValue }
+            val newValueWithPace = _state.value?.copy(stepsPerMinText = response.paceStr)
+            withContext(Dispatchers.Main) { _state.value = newValueWithPace }
+
+            val channel = emitPlayerStateUseCase.execute(this)
+            for (playerState in channel) {
+                val newValueWithCover = _state.value?.copy(coverUriStr = playerState.coverUrl)
+                withContext(Dispatchers.Main) { _state.value = newValueWithCover }
+            }
         }
     }
 
     fun onIncreasePace() = viewModelScope.launch {
         val response = increasePaceUseCase.execute()
-        val newValue = _state.value?.copy(
-            stepsPerMinText = response.newPaceStr,
-            coverUriStr = response.coverUrl
-        )
+        val newValue = _state.value?.copy(stepsPerMinText = response.newPaceStr)
         withContext(Dispatchers.Main) { _state.value = newValue }
     }
 

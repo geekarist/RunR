@@ -2,6 +2,7 @@ package me.cpele.runr
 
 import android.app.Application
 import com.google.gson.Gson
+import me.cpele.runr.domain.EmitPlayerStateUseCase
 import me.cpele.runr.domain.TokenProvider
 import me.cpele.runr.domain.usecase.*
 import me.cpele.runr.infra.model.SpotifyAuthorizationAsync
@@ -52,13 +53,15 @@ class CustomApp : Application() {
     private val decreasePaceUseCase =
         DecreasePaceUseCase(paceRepository, startRunUseCase)
     private val getPaceUseCase = GetPaceUseCase(paceRepository)
+    private val emitPlayerStateUseCase = EmitPlayerStateUseCase()
 
     val mainViewModelFactory = ViewModelFactory { MainViewModel(player) }
     val runningViewModelFactory = ViewModelFactory {
         RunningViewModel(
             increasePaceUseCase = increasePaceUseCase,
             getPaceUseCase = getPaceUseCase,
-            decreasePaceUseCase = decreasePaceUseCase
+            decreasePaceUseCase = decreasePaceUseCase,
+            emitPlayerStateUseCase = emitPlayerStateUseCase
         )
     }
 
