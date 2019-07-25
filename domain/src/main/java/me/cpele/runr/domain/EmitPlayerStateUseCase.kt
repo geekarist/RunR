@@ -26,6 +26,7 @@ class EmitPlayerStateUseCase {
                 )
                 delay(2000)
             }
+            close()
         }
 
     data class Response(val isPlaying: Boolean, val coverUrl: String)
