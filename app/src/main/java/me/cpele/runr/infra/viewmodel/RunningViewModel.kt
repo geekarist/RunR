@@ -33,7 +33,7 @@ class RunningViewModel(
             val newValueWithPace = _state.value?.copy(stepsPerMinText = response.paceStr)
             withContext(Dispatchers.Main) { _state.value = newValueWithPace }
 
-            val channel = emitPlayerStateUseCase.execute(this)
+            val channel = emitPlayerStateUseCase.execute()
             for (playerState in channel) {
                 val newValueWithCover = _state.value?.copy(coverUriStr = playerState.coverUrl)
                 withContext(Dispatchers.Main) { _state.value = newValueWithCover }

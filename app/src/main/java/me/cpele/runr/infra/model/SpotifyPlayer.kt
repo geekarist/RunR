@@ -4,13 +4,15 @@ import android.app.Application
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.produce
 import me.cpele.runr.BuildConfig
 import me.cpele.runr.R
 import me.cpele.runr.domain.TokenProvider
 import me.cpele.runr.domain.bo.PlaylistBo
 import me.cpele.runr.domain.iface.Player
+import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -18,7 +20,11 @@ import kotlin.coroutines.suspendCoroutine
 class SpotifyPlayer(
     private val application: Application,
     private val tokenProvider: TokenProvider
-) : Player {
+) : Player, CoroutineScope {
+
+    private val job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Default
 
     private var appRemote: SpotifyAppRemote? = null
 
@@ -89,8 +95,21 @@ class SpotifyPlayer(
                 }
         }
 
+    @Suppress("EXPERIMENTAL_API_USAGE")
+    override fun observeStateForever(): ReceiveChannel<Player.State> =
+        produce {
+            withContext(Dispatchers.Main) { connect() }
+            val subscription = appRemote?.playerApi?.subscribeToPlayerState()
+            subscription?.setEventCallback {
+                offer(Player.State(it.isPaused, it.track.imageUri.raw, null))
+            }
+            invokeOnClose { subscription?.cancel() }
+            delay(Long.MAX_VALUE)
+        }
+
     override fun disconnect() {
         appRemote?.let { SpotifyAppRemote.disconnect(it) }
         appRemote = null
+        job.cancelChildren()
     }
 }

@@ -53,7 +53,7 @@ class CustomApp : Application() {
     private val decreasePaceUseCase =
         DecreasePaceUseCase(paceRepository, startRunUseCase)
     private val getPaceUseCase = GetPaceUseCase(paceRepository)
-    private val emitPlayerStateUseCase = EmitPlayerStateUseCase()
+    private val emitPlayerStateUseCase = EmitPlayerStateUseCase(player)
 
     val mainViewModelFactory = ViewModelFactory { MainViewModel(player) }
     val runningViewModelFactory = ViewModelFactory {
