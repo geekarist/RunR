@@ -1,9 +1,14 @@
 package me.cpele.runr.infra.model
 
 import android.app.Application
+import android.graphics.Bitmap
+import androidx.annotation.WorkerThread
+import androidx.core.net.toUri
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
+import com.spotify.protocol.types.Image
+import com.spotify.protocol.types.ImageUri
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.produce
@@ -12,6 +17,7 @@ import me.cpele.runr.R
 import me.cpele.runr.domain.TokenProvider
 import me.cpele.runr.domain.bo.PlaylistBo
 import me.cpele.runr.domain.iface.Player
+import java.io.File
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -103,11 +109,25 @@ class SpotifyPlayer(
             withContext(Dispatchers.Main) { connect() }
             val subscription = appRemote?.playerApi?.subscribeToPlayerState()
             subscription?.setEventCallback {
-                offer(Player.State(it.isPaused, it.track.imageUri.raw, null))
+                launch {
+                    val url = withContext(Dispatchers.IO) { it.track.imageUri.persist() }
+                    send(Player.State(it.isPaused, url, null))
+                }
             }
             invokeOnClose { subscription?.cancel() } // TODO: Check if subscription is canceled
             delay(Long.MAX_VALUE)
         }
+
+    @WorkerThread
+    private fun ImageUri.persist(): String {
+        val bitmap = appRemote?.imagesApi?.getImage(this, Image.Dimension.LARGE)?.await()?.data
+        val dir = application.cacheDir
+        val file = File.createTempFile("track-cover-", ".wepb", dir)
+        val output = file.outputStream()
+        bitmap?.compress(Bitmap.CompressFormat.WEBP, 100, output)
+        output.close()
+        return file.toUri().toString()
+    }
 
     override fun disconnect() {
         appRemote?.let { SpotifyAppRemote.disconnect(it) }
