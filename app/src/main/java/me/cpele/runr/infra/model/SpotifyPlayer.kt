@@ -15,7 +15,6 @@ import me.cpele.runr.domain.iface.Player
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
 class SpotifyPlayer(
     private val application: Application,
@@ -42,34 +41,37 @@ class SpotifyPlayer(
         tokenProvider.get() // Token not needed here
     }
 
-    private suspend fun ensureRemoteConnected() = suspendCoroutine<Unit> { continuation ->
+    private suspend fun ensureRemoteConnected() =
+        suspendCancellableCoroutine<Unit> { continuation ->
 
-        SpotifyAppRemote.setDebugMode(BuildConfig.DEBUG)
+            SpotifyAppRemote.setDebugMode(BuildConfig.DEBUG)
 
-        if (appRemote?.isConnected == true) {
-            continuation.resume(Unit)
-            return@suspendCoroutine
-        }
-
-        val params = ConnectionParams
-            .Builder(BuildConfig.SPOTIFY_CLIENT_ID)
-            .showAuthView(true)
-            .setRedirectUri(application.getString(R.string.conf_redirect_uri))
-            .build()
-
-        SpotifyAppRemote.connect(application, params, object : Connector.ConnectionListener {
-            override fun onFailure(p0: Throwable?) {
-                continuation.resumeWithException(
-                    p0 ?: Exception("Unknown error connecting to Spotify app remote")
-                )
-            }
-
-            override fun onConnected(p0: SpotifyAppRemote?) {
-                appRemote = p0
+            if (appRemote?.isConnected == true) {
                 continuation.resume(Unit)
+                return@suspendCancellableCoroutine
             }
-        })
-    }
+
+            val params = ConnectionParams
+                .Builder(BuildConfig.SPOTIFY_CLIENT_ID)
+                .showAuthView(true)
+                .setRedirectUri(application.getString(R.string.conf_redirect_uri))
+                .build()
+
+            SpotifyAppRemote.connect(application, params, object : Connector.ConnectionListener {
+                override fun onFailure(p0: Throwable?) {
+                    if (continuation.isActive) {
+                        continuation.resumeWithException(
+                            p0 ?: Exception("Unknown error connecting to Spotify app remote")
+                        )
+                    }
+                }
+
+                override fun onConnected(p0: SpotifyAppRemote?) {
+                    appRemote = p0
+                    continuation.resume(Unit)
+                }
+            })
+        }
 
     private suspend fun startPlaying(playlist: PlaylistBo) {
         withContext(Dispatchers.IO) {
@@ -103,13 +105,13 @@ class SpotifyPlayer(
             subscription?.setEventCallback {
                 offer(Player.State(it.isPaused, it.track.imageUri.raw, null))
             }
-            invokeOnClose { subscription?.cancel() }
+            invokeOnClose { subscription?.cancel() } // TODO: Check if subscription is canceled
             delay(Long.MAX_VALUE)
         }
 
     override fun disconnect() {
         appRemote?.let { SpotifyAppRemote.disconnect(it) }
         appRemote = null
-        job.cancelChildren()
+        job.cancelChildren() // TODO: Call before SpotifyAppRemote.disconnect, check if this works
     }
 }
