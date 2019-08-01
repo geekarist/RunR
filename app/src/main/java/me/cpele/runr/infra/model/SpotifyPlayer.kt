@@ -114,24 +114,26 @@ class SpotifyPlayer(
                     send(Player.State(it.isPaused, url, null))
                 }
             }
-            invokeOnClose { subscription?.cancel() } // TODO: Check if subscription is canceled
+            invokeOnClose { subscription?.cancel() }
             delay(Long.MAX_VALUE)
         }
 
     @WorkerThread
     private fun ImageUri.persist(): String {
-        val bitmap = appRemote?.imagesApi?.getImage(this, Image.Dimension.LARGE)?.await()?.data
         val dir = application.cacheDir
-        val file = File.createTempFile("track-cover-", ".wepb", dir)
-        val output = file.outputStream()
-        bitmap?.compress(Bitmap.CompressFormat.WEBP, 100, output)
-        output.close()
-        return file.toUri().toString()
+        val cacheFile = File(dir, "${raw}.wepb")
+        if (!cacheFile.exists()) {
+            val bitmap = appRemote?.imagesApi?.getImage(this, Image.Dimension.LARGE)?.await()?.data
+            val output = cacheFile.outputStream()
+            bitmap?.compress(Bitmap.CompressFormat.WEBP, 100, output)
+            output.close()
+        }
+        return cacheFile.toUri().toString()
     }
 
     override fun disconnect() {
         appRemote?.let { SpotifyAppRemote.disconnect(it) }
         appRemote = null
-        job.cancelChildren() // TODO: Call before SpotifyAppRemote.disconnect, check if this works
+        job.cancelChildren()
     }
 }

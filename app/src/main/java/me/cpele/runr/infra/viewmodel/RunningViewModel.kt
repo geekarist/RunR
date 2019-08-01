@@ -31,12 +31,16 @@ class RunningViewModel(
         viewModelScope.launch {
             val response = getPaceUseCase.execute()
             val newValueWithPace = _state.value?.copy(stepsPerMinText = response.paceStr)
-            withContext(Dispatchers.Main) { _state.value = newValueWithPace }
+            if (_state.value != newValueWithPace) {
+                withContext(Dispatchers.Main) { _state.value = newValueWithPace }
+            }
 
             val channel = emitPlayerStateUseCase.execute()
             for (playerState in channel) {
                 val newValueWithCover = _state.value?.copy(coverUriStr = playerState.coverUrl)
-                withContext(Dispatchers.Main) { _state.value = newValueWithCover }
+                if (_state.value != newValueWithCover) {
+                    withContext(Dispatchers.Main) { _state.value = newValueWithCover }
+                }
             }
         }
     }
@@ -48,7 +52,6 @@ class RunningViewModel(
     }
 
     fun onDecreasePace() = viewModelScope.launch {
-        // TODO: Update cover
         val response = decreasePaceUseCase.execute()
         val newValue = _state.value?.copy(stepsPerMinText = response.newPaceStr)
         withContext(Dispatchers.Main) { _state.value = newValue }
