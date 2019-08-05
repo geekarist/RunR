@@ -4,7 +4,7 @@ import me.cpele.runr.domain.iface.Player
 import me.cpele.runr.domain.iface.PlaylistRepository
 import me.cpele.runr.domain.iface.TrackRepository
 
-class StartRunUseCase(
+class StartRun(
     private val trackRepository: TrackRepository,
     private val playlistRepository: PlaylistRepository,
     private val player: Player

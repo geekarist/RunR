@@ -7,16 +7,16 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.cpele.runr.domain.EmitPlayerStateUseCase
-import me.cpele.runr.domain.usecase.DecreasePaceUseCase
-import me.cpele.runr.domain.usecase.GetPaceUseCase
-import me.cpele.runr.domain.usecase.IncreasePaceUseCase
+import me.cpele.runr.domain.usecase.DecreasePace
+import me.cpele.runr.domain.usecase.GetPace
+import me.cpele.runr.domain.usecase.IncreasePace
+import me.cpele.runr.domain.usecase.ObservePlayerState
 
 class RunningViewModel(
-    private val increasePaceUseCase: IncreasePaceUseCase,
-    private val getPaceUseCase: GetPaceUseCase,
-    private val decreasePaceUseCase: DecreasePaceUseCase,
-    val emitPlayerStateUseCase: EmitPlayerStateUseCase
+    private val increasePace: IncreasePace,
+    private val getPace: GetPace,
+    private val decreasePace: DecreasePace,
+    val observePlayerState: ObservePlayerState
 ) : ViewModel() {
 
     private val _state = MutableLiveData<State>().apply {
@@ -29,13 +29,13 @@ class RunningViewModel(
 
     init {
         viewModelScope.launch {
-            val response = getPaceUseCase.execute()
+            val response = getPace.execute()
             val newValueWithPace = _state.value?.copy(stepsPerMinText = response.paceStr)
             if (_state.value != newValueWithPace) {
                 withContext(Dispatchers.Main) { _state.value = newValueWithPace }
             }
 
-            val channel = emitPlayerStateUseCase.execute()
+            val channel = observePlayerState.execute()
             for (playerState in channel) {
                 val newValueWithCover = _state.value?.copy(coverUriStr = playerState.coverUrl)
                 if (_state.value != newValueWithCover) {
@@ -46,13 +46,13 @@ class RunningViewModel(
     }
 
     fun onIncreasePace() = viewModelScope.launch {
-        val response = increasePaceUseCase.execute()
+        val response = increasePace.execute()
         val newValue = _state.value?.copy(stepsPerMinText = response.newPaceStr)
         withContext(Dispatchers.Main) { _state.value = newValue }
     }
 
     fun onDecreasePace() = viewModelScope.launch {
-        val response = decreasePaceUseCase.execute()
+        val response = decreasePace.execute()
         val newValue = _state.value?.copy(stepsPerMinText = response.newPaceStr)
         withContext(Dispatchers.Main) { _state.value = newValue }
     }

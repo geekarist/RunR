@@ -1,11 +1,11 @@
-package me.cpele.runr.domain
+package me.cpele.runr.domain.usecase
 
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.map
 import kotlinx.coroutines.coroutineScope
 import me.cpele.runr.domain.iface.Player
 
-class EmitPlayerStateUseCase(private val player: Player) {
+class ObservePlayerState(private val player: Player) {
 
     @Suppress("EXPERIMENTAL_API_USAGE")
     suspend fun execute(): ReceiveChannel<Response> = coroutineScope {

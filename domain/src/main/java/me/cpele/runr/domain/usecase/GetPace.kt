@@ -2,7 +2,7 @@ package me.cpele.runr.domain.usecase
 
 import me.cpele.runr.domain.iface.PaceRepository
 
-class GetPaceUseCase(private val paceRepository: PaceRepository) {
+class GetPace(private val paceRepository: PaceRepository) {
 
     fun execute(): Response {
         val pace: Int = paceRepository.get()

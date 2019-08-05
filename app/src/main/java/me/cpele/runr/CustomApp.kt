@@ -2,7 +2,6 @@ package me.cpele.runr
 
 import android.app.Application
 import com.google.gson.Gson
-import me.cpele.runr.domain.EmitPlayerStateUseCase
 import me.cpele.runr.domain.TokenProvider
 import me.cpele.runr.domain.usecase.*
 import me.cpele.runr.infra.model.SpotifyAuthorizationAsync
@@ -46,22 +45,22 @@ class CustomApp : Application() {
     private val paceRepository = SharedPrefsPaceRepository(this)
     val player = SpotifyPlayer(this, tokenProvider)
     private val startRunUseCase =
-        StartRunUseCase(trackRepository, playlistRepository, player)
-    private val getPlayerStateUseCase = PlayerStateUseCase(player)
+        StartRun(trackRepository, playlistRepository, player)
+    private val getPlayerStateUseCase = GetPlayerState(player)
     private val increasePaceUseCase =
-        IncreasePaceUseCase(paceRepository, startRunUseCase, getPlayerStateUseCase)
+        IncreasePace(paceRepository, startRunUseCase, getPlayerStateUseCase)
     private val decreasePaceUseCase =
-        DecreasePaceUseCase(paceRepository, startRunUseCase)
-    private val getPaceUseCase = GetPaceUseCase(paceRepository)
-    private val emitPlayerStateUseCase = EmitPlayerStateUseCase(player)
+        DecreasePace(paceRepository, startRunUseCase)
+    private val getPaceUseCase = GetPace(paceRepository)
+    private val emitPlayerStateUseCase = ObservePlayerState(player)
 
     val mainViewModelFactory = ViewModelFactory { MainViewModel(player) }
     val runningViewModelFactory = ViewModelFactory {
         RunningViewModel(
-            increasePaceUseCase = increasePaceUseCase,
-            getPaceUseCase = getPaceUseCase,
-            decreasePaceUseCase = decreasePaceUseCase,
-            emitPlayerStateUseCase = emitPlayerStateUseCase
+            increasePace = increasePaceUseCase,
+            getPace = getPaceUseCase,
+            decreasePace = decreasePaceUseCase,
+            observePlayerState = emitPlayerStateUseCase
         )
     }
 

@@ -2,16 +2,16 @@ package me.cpele.runr.domain.usecase
 
 import me.cpele.runr.domain.iface.PaceRepository
 
-class DecreasePaceUseCase(
+class DecreasePace(
     private val paceRepository: PaceRepository,
-    private val startRunUseCase: StartRunUseCase
+    private val startRun: StartRun
 ) {
 
     suspend fun execute(): Response {
         val currentPace = paceRepository.get()
         val newPace = currentPace - PACE_DECREMENT
         paceRepository.set(newPace)
-        startRunUseCase.execute(newPace)
+        startRun.execute(newPace)
         return Response(
             newPace.toString(),
             newPace
