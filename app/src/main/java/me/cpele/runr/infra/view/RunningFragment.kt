@@ -3,6 +3,7 @@ package me.cpele.runr.infra.view
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +41,9 @@ class RunningFragment : Fragment() {
 
         viewModel.state.observe(this, Observer { state: RunningViewModel.State? ->
             running_spm_value.text = state?.stepsPerMinText
+            Log.d("COVER_LOAD", "Fragment loads cover: ${state?.coverUriStr}")
             loadCover(state?.coverUriStr, running_track_cover) {
+                Log.d("COVER_LOAD", "Fragment has loaded cover")
                 running_track_cover_progress.visibility = View.GONE
             }
         })

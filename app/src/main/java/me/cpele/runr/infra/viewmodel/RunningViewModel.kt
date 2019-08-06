@@ -1,5 +1,6 @@
 package me.cpele.runr.infra.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,26 +20,32 @@ class RunningViewModel(
     val observePlayerState: ObservePlayerState
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<State>().apply {
-        value =
-            State(coverUriStr = "http://slowwly.robertomurray.co.uk/delay/5000/url/https://img.discogs.com/4XvJZQu82IRMe_AqSaKHNiaHmEw=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-2105567-1364683794-9014.jpeg.jpg")
-    }
+    private val _state = MutableLiveData<State>()
     val state: LiveData<State> = _state
 
-    data class State(val stepsPerMinText: String = "", val coverUriStr: String?)
+    data class State(val stepsPerMinText: String = "", val coverUriStr: String? = null)
 
     init {
         viewModelScope.launch {
             val response = getPace.execute()
-            val newValueWithPace = _state.value?.copy(stepsPerMinText = response.paceStr)
+            val previousValue = _state.value ?: State()
+            val newValueWithPace = previousValue.copy(stepsPerMinText = response.paceStr)
             if (_state.value != newValueWithPace) {
                 withContext(Dispatchers.Main) { _state.value = newValueWithPace }
             }
 
             val channel = observePlayerState.execute()
             for (playerState in channel) {
+                Log.d(
+                    "COVER_LOAD",
+                    "VM receives player state with cover: ${playerState.coverUrl}"
+                )
                 val newValueWithCover = _state.value?.copy(coverUriStr = playerState.coverUrl)
                 if (_state.value != newValueWithCover) {
+                    Log.d(
+                        "COVER_LOAD",
+                        "VM detects cover change, emitting value"
+                    )
                     withContext(Dispatchers.Main) { _state.value = newValueWithCover }
                 }
             }
