@@ -5,8 +5,7 @@ import me.cpele.runr.domain.iface.PaceRepository
 
 class IncreasePace(
     private val paceRepository: PaceRepository,
-    private val startRun: StartRun,
-    private val getGetPlayerState: GetPlayerState
+    private val startRun: StartRun
 ) {
 
     suspend fun execute(): Response {
