@@ -17,7 +17,7 @@ class SpotifyTrackRepository(
             authorization = "Bearer $token",
             minTempo = pace - 2,
             maxTempo = pace + 2,
-            seedGenres = "rock"
+            seedGenres = "guitar"
         )
         Log.d(
             javaClass.simpleName,
