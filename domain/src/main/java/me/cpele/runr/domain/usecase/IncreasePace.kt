@@ -12,17 +12,16 @@ class IncreasePace(
         val currentPace = paceRepository.get()
         val newPace = currentPace + PACE_INCREMENT
         paceRepository.set(newPace)
-        startRun.execute(newPace)
-        return Response(
-            newPace.toString(),
-            newPace
-        )
+        return when (startRun.execute(newPace)) {
+            is StartRun.Response.Success -> Response.Success(newPace.toString())
+            is StartRun.Response.NoTrackFound -> Response.NoTrackFound(newPace.toString())
+        }
     }
 
-    class Response(
-        val newPaceStr: String,
-        val newPace: Int
-    )
+    sealed class Response(val newPaceStr: String) {
+        class Success(newPaceStr: String) : Response(newPaceStr)
+        class NoTrackFound(newPaceStr: String) : Response(newPaceStr)
+    }
 
     companion object {
         private const val PACE_INCREMENT = 5

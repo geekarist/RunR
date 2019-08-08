@@ -1,6 +1,7 @@
 package me.cpele.runr.infra.viewmodel
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,13 +18,18 @@ class RunningViewModel(
     private val increasePace: IncreasePace,
     private val getPace: GetPace,
     private val decreasePace: DecreasePace,
-    val observePlayerState: ObservePlayerState
+    private val observePlayerState: ObservePlayerState
 ) : ViewModel() {
 
     private val _state = MutableLiveData<State>()
     val state: LiveData<State> = _state
 
-    data class State(val stepsPerMinText: String = "", val coverUriStr: String? = null)
+    data class State(
+        val stepsPerMinText: String = "",
+        val coverUriStr: String? = null,
+        val coverVisibility: Int = View.VISIBLE,
+        val noTrackVisibility: Int = View.INVISIBLE
+    )
 
     init {
         viewModelScope.launch {
@@ -54,7 +60,26 @@ class RunningViewModel(
 
     fun onIncreasePace() = viewModelScope.launch {
         val response = increasePace.execute()
-        val newValue = _state.value?.copy(stepsPerMinText = response.newPaceStr)
+
+        val coverVisibility: Int
+        val noTrackVisibility: Int
+        when (response) {
+            is IncreasePace.Response.Success -> {
+                coverVisibility = View.VISIBLE
+                noTrackVisibility = View.INVISIBLE
+            }
+            is IncreasePace.Response.NoTrackFound -> {
+                coverVisibility = View.INVISIBLE
+                noTrackVisibility = View.VISIBLE
+            }
+        }
+
+        val oldValue = _state.value
+        val newValue = oldValue?.copy(
+            stepsPerMinText = response.newPaceStr,
+            coverVisibility = coverVisibility,
+            noTrackVisibility = noTrackVisibility
+        )
         withContext(Dispatchers.Main) { _state.value = newValue }
     }
 

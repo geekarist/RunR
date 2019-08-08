@@ -1,6 +1,9 @@
 package me.cpele.runr
 
 import android.app.Application
+import android.content.ContentResolver
+import android.net.Uri
+import androidx.annotation.DrawableRes
 import com.google.gson.Gson
 import me.cpele.runr.domain.TokenProvider
 import me.cpele.runr.domain.usecase.*
@@ -73,3 +76,13 @@ class CustomApp : Application() {
         lateinit var instance: CustomApp
     }
 }
+
+
+fun Application.getUrl(@DrawableRes drawableRes: Int): String =
+    Uri.Builder()
+        .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+        .authority(resources.getResourcePackageName(drawableRes))
+        .appendPath(resources.getResourceTypeName(drawableRes))
+        .appendPath(resources.getResourceEntryName(drawableRes))
+        .build()
+        .toString()

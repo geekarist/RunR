@@ -9,9 +9,19 @@ class StartRun(
     private val playlistRepository: PlaylistRepository,
     private val player: Player
 ) {
-    suspend fun execute(pace: Int) {
+    suspend fun execute(pace: Int): Response {
         val tracks = trackRepository.findByPace(pace)
-        val playlist = playlistRepository.create(tracks)
-        player.play(playlist)
+        return if (tracks.isNotEmpty()) {
+            val playlist = playlistRepository.create(tracks)
+            player.play(playlist)
+            Response.Success
+        } else {
+            Response.NoTrackFound
+        }
+    }
+
+    sealed class Response {
+        object Success : Response()
+        object NoTrackFound : Response()
     }
 }
