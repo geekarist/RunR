@@ -38,21 +38,19 @@ class RunningFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.state.observe(this, Observer { state: RunningViewModel.State? ->
-            running_spm_value.text = state?.stepsPerMinText
-            state?.coverUriStr?.let { coverUrl ->
-                loadCover(coverUrl, running_track_cover) {
-                    running_track_cover_progress.visibility = View.GONE
-                }
-            }
-            state?.apply {
-                running_track_cover.visibility = coverVisibility
-                running_no_track.visibility = noTrackVisibility
-            }
-        })
+        viewModel.state.observe(this, Observer { render(it) })
 
         running_spm_increase.setOnClickListener { viewModel.onIncreasePace() }
         running_spm_decrease.setOnClickListener { viewModel.onDecreasePace() }
+    }
+
+    private fun render(state: RunningViewModel.State) {
+        running_spm_value.text = state.stepsPerMinText
+        loadCover(state.coverUriStr, running_track_cover) {
+            running_track_cover_progress.visibility = View.GONE
+        }
+        running_track_cover.visibility = state.coverVisibility
+        running_no_track.visibility = state.noTrackVisibility
     }
 
     private fun loadCover(url: String?, target: ImageView, onLoadFinished: () -> Unit) {

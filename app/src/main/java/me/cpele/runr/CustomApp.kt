@@ -63,7 +63,8 @@ class CustomApp : Application() {
             increasePace = increasePaceUseCase,
             getPace = getPaceUseCase,
             decreasePace = decreasePaceUseCase,
-            observePlayerState = emitPlayerStateUseCase
+            observePlayerState = emitPlayerStateUseCase,
+            application = this
         )
     }
 
