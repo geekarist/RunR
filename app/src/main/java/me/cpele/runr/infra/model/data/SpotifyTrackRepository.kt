@@ -24,8 +24,6 @@ class SpotifyTrackRepository(
             "Found ${recommendations.tracks.size} tracks: $recommendations"
         )
         Log.d(javaClass.simpleName, "Spotify auth token: $token")
-        return recommendations.tracks.map {
-            Track(it.id, it.name, it.album.images[0].url)
-        }
+        return recommendations.tracks.map { Track(it.id) }
     }
 }
