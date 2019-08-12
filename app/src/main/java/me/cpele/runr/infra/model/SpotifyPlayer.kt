@@ -16,7 +16,7 @@ import kotlinx.coroutines.channels.produce
 import me.cpele.runr.BuildConfig
 import me.cpele.runr.R
 import me.cpele.runr.domain.TokenProvider
-import me.cpele.runr.domain.bo.PlaylistBo
+import me.cpele.runr.domain.entities.Playlist
 import me.cpele.runr.domain.iface.Player
 import java.io.File
 import java.util.concurrent.Executors
@@ -40,7 +40,7 @@ class SpotifyPlayer(
 
     private var appRemote: SpotifyAppRemote? = null
 
-    override suspend fun play(playlist: PlaylistBo) {
+    override suspend fun play(playlist: Playlist) {
         connect()
         startPlaying(playlist)
     }
@@ -86,7 +86,7 @@ class SpotifyPlayer(
             })
         }
 
-    private suspend fun startPlaying(playlist: PlaylistBo) {
+    private suspend fun startPlaying(playlist: Playlist) {
         withContext(Dispatchers.IO) {
             appRemote?.playerApi
                 ?.play("spotify:playlist:${playlist.id}")

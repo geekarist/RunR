@@ -1,9 +1,9 @@
-package me.cpele.runr.domain.bo
+package me.cpele.runr.domain.entities
 
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-data class AuthResponseBo(
+data class AuthResponse(
     val accessToken: String? = null,
     val error: String?,
     val issueDate: Date,

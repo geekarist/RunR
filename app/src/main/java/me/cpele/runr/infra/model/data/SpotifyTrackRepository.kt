@@ -2,7 +2,7 @@ package me.cpele.runr.infra.model.data
 
 import android.util.Log
 import me.cpele.runr.domain.TokenProvider
-import me.cpele.runr.domain.bo.TrackBo
+import me.cpele.runr.domain.entities.Track
 import me.cpele.runr.domain.iface.TrackRepository
 import me.cpele.runr.infra.model.network.SpotifyService
 
@@ -10,7 +10,7 @@ class SpotifyTrackRepository(
     private val tokenProvider: TokenProvider,
     private val spotifyService: SpotifyService
 ) : TrackRepository {
-    override suspend fun findByPace(pace: Int): List<TrackBo> {
+    override suspend fun findByPace(pace: Int): List<Track> {
         val token = tokenProvider.get()
         Log.d(javaClass.simpleName, "Find tracks with pace: $pace")
         val recommendations = spotifyService.getRecommendations(
@@ -25,7 +25,7 @@ class SpotifyTrackRepository(
         )
         Log.d(javaClass.simpleName, "Spotify auth token: $token")
         return recommendations.tracks.map {
-            TrackBo(it.id, it.name, it.album.images[0].url)
+            Track(it.id, it.name, it.album.images[0].url)
         }
     }
 }
