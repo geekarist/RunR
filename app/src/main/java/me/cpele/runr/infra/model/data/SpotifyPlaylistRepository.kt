@@ -37,6 +37,6 @@ class SpotifyPlaylistRepository(
             uris = SpotifyTracksPostRequest(tracks.map { "spotify:track:${it.id}" })
         )
 
-        return Playlist(spotifyPlaylist.id, tracks)
+        return Playlist(spotifyPlaylist.id)
     }
 }
