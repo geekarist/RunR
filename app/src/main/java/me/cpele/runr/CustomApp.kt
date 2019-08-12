@@ -6,7 +6,10 @@ import android.net.Uri
 import androidx.annotation.DrawableRes
 import com.google.gson.Gson
 import me.cpele.runr.domain.TokenProvider
-import me.cpele.runr.domain.usecase.*
+import me.cpele.runr.domain.usecase.ChangePace
+import me.cpele.runr.domain.usecase.GetPace
+import me.cpele.runr.domain.usecase.ObservePlayerState
+import me.cpele.runr.domain.usecase.StartRun
 import me.cpele.runr.infra.model.SpotifyAuthorizationAsync
 import me.cpele.runr.infra.model.SpotifyPlayer
 import me.cpele.runr.infra.model.data.PrefAuthResponseRepository
@@ -49,7 +52,6 @@ class CustomApp : Application() {
     val player = SpotifyPlayer(this, tokenProvider)
     private val startRunUseCase =
         StartRun(trackRepository, playlistRepository, player)
-    private val getPlayerStateUseCase = GetPlayerState(player)
     private val increasePaceUseCase =
         ChangePace(paceRepository, startRunUseCase)
     private val getPaceUseCase = GetPace(paceRepository)
