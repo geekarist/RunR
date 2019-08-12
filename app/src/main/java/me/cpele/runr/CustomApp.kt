@@ -51,18 +51,15 @@ class CustomApp : Application() {
         StartRun(trackRepository, playlistRepository, player)
     private val getPlayerStateUseCase = GetPlayerState(player)
     private val increasePaceUseCase =
-        IncreasePace(paceRepository, startRunUseCase)
-    private val decreasePaceUseCase =
-        DecreasePace(paceRepository, startRunUseCase)
+        ChangePace(paceRepository, startRunUseCase)
     private val getPaceUseCase = GetPace(paceRepository)
     private val emitPlayerStateUseCase = ObservePlayerState(player)
 
     val mainViewModelFactory = ViewModelFactory { MainViewModel(player) }
     val runningViewModelFactory = ViewModelFactory {
         RunningViewModel(
-            increasePace = increasePaceUseCase,
+            changePace = increasePaceUseCase,
             getPace = getPaceUseCase,
-            decreasePace = decreasePaceUseCase,
             observePlayerState = emitPlayerStateUseCase,
             application = this
         )

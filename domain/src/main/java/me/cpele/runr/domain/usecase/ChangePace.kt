@@ -3,14 +3,14 @@ package me.cpele.runr.domain.usecase
 import me.cpele.runr.domain.iface.PaceRepository
 
 
-class IncreasePace(
+class ChangePace(
     private val paceRepository: PaceRepository,
     private val startRun: StartRun
 ) {
 
-    suspend fun execute(): Response {
+    suspend fun execute(direction: Direction): Response {
         val currentPace = paceRepository.get()
-        val newPace = currentPace + PACE_INCREMENT
+        val newPace = currentPace + direction.step
         paceRepository.set(newPace)
         return when (startRun.execute(newPace)) {
             is StartRun.Response.Success -> Response.Success(newPace.toString())
@@ -25,5 +25,10 @@ class IncreasePace(
 
     companion object {
         private const val PACE_INCREMENT = 5
+    }
+
+    enum class Direction(val step: Int) {
+        Increase(PACE_INCREMENT),
+        Decrease(-PACE_INCREMENT)
     }
 }

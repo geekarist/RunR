@@ -11,16 +11,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.cpele.runr.R
-import me.cpele.runr.domain.usecase.DecreasePace
+import me.cpele.runr.domain.usecase.ChangePace
 import me.cpele.runr.domain.usecase.GetPace
-import me.cpele.runr.domain.usecase.IncreasePace
 import me.cpele.runr.domain.usecase.ObservePlayerState
 import me.cpele.runr.getUrl
 
 class RunningViewModel(
-    private val increasePace: IncreasePace,
+    private val changePace: ChangePace,
     private val getPace: GetPace,
-    private val decreasePace: DecreasePace,
     private val observePlayerState: ObservePlayerState,
     private val application: Application
 ) : ViewModel() {
@@ -64,16 +62,24 @@ class RunningViewModel(
     }
 
     fun onIncreasePace() = viewModelScope.launch {
-        val response = increasePace.execute()
+        onChangePace(ChangePace.Direction.Increase)
+    }
+
+    fun onDecreasePace() = viewModelScope.launch {
+        onChangePace(ChangePace.Direction.Decrease)
+    }
+
+    private suspend fun onChangePace(direction: ChangePace.Direction) {
+        val response = changePace.execute(direction)
 
         val coverVisibility: Int
         val noTrackVisibility: Int
         when (response) {
-            is IncreasePace.Response.Success -> {
+            is ChangePace.Response.Success -> {
                 coverVisibility = View.VISIBLE
                 noTrackVisibility = View.INVISIBLE
             }
-            is IncreasePace.Response.NoTrackFound -> {
+            is ChangePace.Response.NoTrackFound -> {
                 coverVisibility = View.INVISIBLE
                 noTrackVisibility = View.VISIBLE
             }
@@ -85,13 +91,6 @@ class RunningViewModel(
             coverVisibility = coverVisibility,
             noTrackVisibility = noTrackVisibility
         )
-        withContext(Dispatchers.Main) { _state.value = newValue }
-    }
-
-    fun onDecreasePace() = viewModelScope.launch {
-        // TODO: Empty state
-        val response = decreasePace.execute()
-        val newValue = _state.value?.copy(stepsPerMinText = response.newPaceStr)
         withContext(Dispatchers.Main) { _state.value = newValue }
     }
 }
