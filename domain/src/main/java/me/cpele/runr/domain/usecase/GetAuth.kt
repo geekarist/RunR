@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-class GetAuthToken(
+class GetAuth(
     private val authorization: AuthorizationAsync,
     private val authResponseRepository: AuthResponseRepository
 ) {
@@ -48,12 +48,12 @@ class GetAuthToken(
     }
 
     data class Response(val token: String)
-}
 
-private val Auth.isNotExpired: Boolean
-    get() {
-        val issueDateMs = issueDate.time
-        val expiresInMs = TimeUnit.SECONDS.toMillis(expiresInSec.toLong())
-        val expirationDate = Date(issueDateMs + expiresInMs)
-        return Date().before(expirationDate)
-    }
+    private val Auth.isNotExpired: Boolean
+        get() {
+            val issueDateMs = issueDate.time
+            val expiresInMs = TimeUnit.SECONDS.toMillis(expiresInSec.toLong())
+            val expirationDate = Date(issueDateMs + expiresInMs)
+            return Date().before(expirationDate)
+        }
+}

@@ -17,7 +17,7 @@ import me.cpele.runr.BuildConfig
 import me.cpele.runr.R
 import me.cpele.runr.domain.adapter.Player
 import me.cpele.runr.domain.api.model.Playlist
-import me.cpele.runr.domain.usecase.GetAuthToken
+import me.cpele.runr.domain.usecase.GetAuth
 import java.io.File
 import java.util.concurrent.Executors
 import kotlin.coroutines.CoroutineContext
@@ -26,7 +26,7 @@ import kotlin.coroutines.resumeWithException
 
 class SpotifyPlayer(
     private val application: Application,
-    private val getAuthToken: GetAuthToken
+    private val getAuth: GetAuth
 ) : Player, CoroutineScope {
 
     private val job = Job()
@@ -51,7 +51,7 @@ class SpotifyPlayer(
     }
 
     private suspend fun ensureUserConnected() {
-        getAuthToken.execute() // Token not needed here
+        getAuth.execute() // Token not needed here
     }
 
     private suspend fun ensureRemoteConnected() =

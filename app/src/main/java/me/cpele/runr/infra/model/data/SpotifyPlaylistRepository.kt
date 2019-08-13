@@ -4,7 +4,7 @@ import android.util.Log
 import me.cpele.runr.domain.adapter.PlaylistRepository
 import me.cpele.runr.domain.api.model.Playlist
 import me.cpele.runr.domain.api.model.Track
-import me.cpele.runr.domain.usecase.GetAuthToken
+import me.cpele.runr.domain.usecase.GetAuth
 import me.cpele.runr.infra.model.network.SpotifyPlaylistCreateRequest
 import me.cpele.runr.infra.model.network.SpotifyService
 import me.cpele.runr.infra.model.network.SpotifyTracksPostRequest
@@ -12,10 +12,10 @@ import java.util.*
 
 class SpotifyPlaylistRepository(
     private val spotifyService: SpotifyService,
-    private val getAuthToken: GetAuthToken
+    private val getAuth: GetAuth
 ) : PlaylistRepository {
     override suspend fun create(tracks: List<Track>): Playlist {
-        val tokenResponse = getAuthToken.execute()
+        val tokenResponse = getAuth.execute()
         val authorization = "Bearer ${tokenResponse.token}"
 
         Log.d(javaClass.simpleName, "Get user id")

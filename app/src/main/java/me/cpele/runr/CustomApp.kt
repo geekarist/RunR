@@ -36,7 +36,7 @@ class CustomApp : Application() {
             .client(httpClient)
             .build()
             .create(SpotifyService::class.java)
-    private val tokenProvider = GetAuthToken(
+    private val tokenProvider = GetAuth(
         SpotifyAuthorizationAsync(this),
         PrefAuthResponseRepository(Gson(), this)
     )
