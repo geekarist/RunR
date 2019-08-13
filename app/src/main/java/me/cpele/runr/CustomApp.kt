@@ -5,11 +5,7 @@ import android.content.ContentResolver
 import android.net.Uri
 import androidx.annotation.DrawableRes
 import com.google.gson.Gson
-import me.cpele.runr.domain.TokenProvider
-import me.cpele.runr.domain.usecase.ChangePace
-import me.cpele.runr.domain.usecase.GetPace
-import me.cpele.runr.domain.usecase.ObservePlayerState
-import me.cpele.runr.domain.usecase.StartRun
+import me.cpele.runr.domain.usecase.*
 import me.cpele.runr.infra.model.SpotifyAuthorizationAsync
 import me.cpele.runr.infra.model.SpotifyPlayer
 import me.cpele.runr.infra.model.data.PrefAuthResponseRepository
@@ -40,7 +36,7 @@ class CustomApp : Application() {
             .client(httpClient)
             .build()
             .create(SpotifyService::class.java)
-    private val tokenProvider = TokenProvider(
+    private val tokenProvider = GetAuthToken(
         SpotifyAuthorizationAsync(this),
         PrefAuthResponseRepository(Gson(), this)
     )

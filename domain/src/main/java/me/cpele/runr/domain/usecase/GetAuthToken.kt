@@ -1,4 +1,4 @@
-package me.cpele.runr.domain
+package me.cpele.runr.domain.usecase
 
 import kotlinx.coroutines.suspendCancellableCoroutine
 import me.cpele.runr.domain.adapter.AuthResponseRepository
@@ -9,17 +9,20 @@ import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-class TokenProvider(
+class GetAuthToken(
     private val authorization: AuthorizationAsync,
     private val authResponseRepository: AuthResponseRepository
 ) {
 
-    suspend fun get(): String {
+    suspend fun execute(): Response {
 
         val savedToken = authResponseRepository.load()
         if (savedToken?.isNotExpired == true) {
-            return savedToken.accessToken
-                ?: throw IllegalStateException("Access token is not expired and should be set")
+            return Response(
+                savedToken.accessToken
+                    ?: throw IllegalStateException("Access token is not expired and should be set")
+            )
+
         }
 
         return suspendCancellableCoroutine { continuation ->
@@ -27,7 +30,11 @@ class TokenProvider(
             authorization.start {
                 authResponseRepository.save(it)
                 when {
-                    it?.accessToken != null -> continuation.resume(it.accessToken)
+                    it?.accessToken != null -> continuation.resume(
+                        Response(
+                            it.accessToken
+                        )
+                    )
                     it?.error != null -> continuation.resumeWithException(Exception("Error: $it"))
                     else -> {
                         val exception = Exception("Auth response is null or empty")
@@ -39,8 +46,9 @@ class TokenProvider(
             continuation.invokeOnCancellation { authorization.cancel() }
         }
     }
-}
 
+    data class Response(val token: String)
+}
 
 private val Auth.isNotExpired: Boolean
     get() {
