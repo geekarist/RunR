@@ -16,8 +16,8 @@ import kotlinx.coroutines.channels.produce
 import me.cpele.runr.BuildConfig
 import me.cpele.runr.R
 import me.cpele.runr.domain.TokenProvider
-import me.cpele.runr.domain.entities.Playlist
-import me.cpele.runr.domain.iface.Player
+import me.cpele.runr.domain.adapter.Player
+import me.cpele.runr.domain.api.model.Playlist
 import java.io.File
 import java.util.concurrent.Executors
 import kotlin.coroutines.CoroutineContext

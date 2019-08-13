@@ -3,7 +3,7 @@ package me.cpele.runr.infra.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import me.cpele.runr.domain.iface.Player
+import me.cpele.runr.domain.adapter.Player
 
 class MainViewModel(private val player: Player) : ViewModel() {
 

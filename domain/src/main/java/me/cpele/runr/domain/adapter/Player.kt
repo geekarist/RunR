@@ -1,7 +1,7 @@
-package me.cpele.runr.domain.iface
+package me.cpele.runr.domain.adapter
 
 import kotlinx.coroutines.channels.ReceiveChannel
-import me.cpele.runr.domain.entities.Playlist
+import me.cpele.runr.domain.api.model.Playlist
 
 interface Player {
 

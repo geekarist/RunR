@@ -1,8 +1,8 @@
 package me.cpele.runr.domain.usecase
 
-import me.cpele.runr.domain.iface.Player
-import me.cpele.runr.domain.iface.PlaylistRepository
-import me.cpele.runr.domain.iface.TrackRepository
+import me.cpele.runr.domain.adapter.Player
+import me.cpele.runr.domain.adapter.PlaylistRepository
+import me.cpele.runr.domain.adapter.TrackRepository
 
 class StartRun(
     private val trackRepository: TrackRepository,

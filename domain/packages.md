@@ -1,11 +1,21 @@
-# Package me.cpele.runr.domain.entities
+# Packages
 
-Contains classes representing the internal domain model. These classes must be internal.
+## me.cpele.runr.domain.entity
 
-# Package me.cpele.runr.domain.api
+Contains the private domain model. Things here must be `internal` or `private`.
 
-Contains interfaces and data transfer objects that can be used by other modules depending on the domain.
+## me.cpele.runr.domain.api
 
-# Package me.cpele.runr.domain.usecase
+Contains what can be used by other modules depending on the domain.
 
-Contains the use cases of the domain.
+### me.cpele.runr.domain.api.usecase
+
+Contains the use cases of the domain. They implement business logic.
+
+### me.cpele.runr.domain.api.model
+
+Contains the public data model of the domain.
+
+## me.cpele.runr.adapter
+
+Contains the interfaces implemented by other components that can be called by the domain.

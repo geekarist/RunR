@@ -3,15 +3,15 @@ package me.cpele.runr.infra.model.data
 import android.app.Application
 import android.preference.PreferenceManager
 import com.google.gson.Gson
-import me.cpele.runr.domain.entities.AuthResponse
-import me.cpele.runr.domain.iface.AuthResponseRepository
+import me.cpele.runr.domain.adapter.AuthResponseRepository
+import me.cpele.runr.domain.api.model.Auth
 
 class PrefAuthResponseRepository(
     private val gson: Gson,
     private val application: Application
 ) : AuthResponseRepository {
 
-    override fun save(response: AuthResponse?) {
+    override fun save(response: Auth?) {
         val serialized = gson.toJson(response)
         PreferenceManager
             .getDefaultSharedPreferences(application)
@@ -20,10 +20,10 @@ class PrefAuthResponseRepository(
             .apply()
     }
 
-    override fun load(): AuthResponse? {
+    override fun load(): Auth? {
         val serialized = PreferenceManager
             .getDefaultSharedPreferences(application)
             .getString("PREF_KEY_AUTH_RESPONSE", null)
-        return gson.fromJson(serialized, AuthResponse::class.java)
+        return gson.fromJson(serialized, Auth::class.java)
     }
 }

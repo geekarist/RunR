@@ -1,4 +1,4 @@
-package me.cpele.runr.domain.iface
+package me.cpele.runr.domain.adapter
 
 interface PaceRepository {
     fun get(): Int

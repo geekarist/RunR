@@ -7,8 +7,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.spotify.sdk.android.authentication.AuthenticationResponse
-import me.cpele.runr.domain.entities.AuthResponse
-import me.cpele.runr.domain.iface.AuthorizationAsync
+import me.cpele.runr.domain.adapter.AuthorizationAsync
+import me.cpele.runr.domain.api.model.Auth
 import me.cpele.runr.infra.view.SpotifyLoginActivity
 import java.util.*
 
@@ -18,7 +18,7 @@ class SpotifyAuthorizationAsync(
 
     private var receiver: BroadcastReceiver? = null
 
-    override fun start(onReceiveResponse: (AuthResponse?) -> Unit) {
+    override fun start(onReceiveResponse: (Auth?) -> Unit) {
         application.startActivity(
             Intent(
                 application,
@@ -46,8 +46,8 @@ class SpotifyAuthorizationAsync(
         receiver?.let { broadcastManager.unregisterReceiver(it) }
     }
 
-    private fun AuthenticationResponse.toBo(): AuthResponse? =
-        AuthResponse(
+    private fun AuthenticationResponse.toBo(): Auth? =
+        Auth(
             accessToken = accessToken,
             error = error,
             issueDate = Date(),

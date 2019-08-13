@@ -3,7 +3,7 @@ package me.cpele.runr.domain.usecase
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.map
 import kotlinx.coroutines.coroutineScope
-import me.cpele.runr.domain.iface.Player
+import me.cpele.runr.domain.adapter.Player
 
 // TODO: Implement UseCase<RequestT, ReceiveChannel<ResponseT>> interface
 class ObservePlayerState(private val player: Player) {

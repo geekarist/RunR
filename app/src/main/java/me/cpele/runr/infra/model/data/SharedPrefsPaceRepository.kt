@@ -2,7 +2,7 @@ package me.cpele.runr.infra.model.data
 
 import android.app.Application
 import android.preference.PreferenceManager
-import me.cpele.runr.domain.iface.PaceRepository
+import me.cpele.runr.domain.adapter.PaceRepository
 
 class SharedPrefsPaceRepository(private val app: Application) :
     PaceRepository {
