@@ -5,6 +5,7 @@ import kotlinx.coroutines.channels.map
 import kotlinx.coroutines.coroutineScope
 import me.cpele.runr.domain.iface.Player
 
+// TODO: Implement UseCase<RequestT, ReceiveChannel<ResponseT>> interface
 class ObservePlayerState(private val player: Player) {
 
     @Suppress("EXPERIMENTAL_API_USAGE")

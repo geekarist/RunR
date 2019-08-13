@@ -3,6 +3,7 @@ package me.cpele.runr.domain.entities
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+// TODO: Make AuthResponse internal
 data class AuthResponse(
     val accessToken: String? = null,
     val error: String?,

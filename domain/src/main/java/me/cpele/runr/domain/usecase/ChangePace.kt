@@ -3,6 +3,7 @@ package me.cpele.runr.domain.usecase
 import me.cpele.runr.domain.iface.PaceRepository
 
 
+// TODO: Implement UseCase<RequestT, ResponseT> interface
 class ChangePace(
     private val paceRepository: PaceRepository,
     private val startRun: StartRun
