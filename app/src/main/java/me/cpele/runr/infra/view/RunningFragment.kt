@@ -42,6 +42,8 @@ class RunningFragment : Fragment() {
 
         running_spm_increase.setOnClickListener { viewModel.onIncreasePace() }
         running_spm_decrease.setOnClickListener { viewModel.onDecreasePace() }
+
+        viewModel.onOrientationChanged(resources.configuration?.orientation)
     }
 
     private fun render(state: RunningViewModel.State) {
@@ -50,6 +52,7 @@ class RunningFragment : Fragment() {
             running_track_cover_progress.visibility = View.GONE
         }
         running_track_cover.visibility = state.coverVisibility
+        running_track_cover.scaleType = state.scaleType
         running_no_track.visibility = state.noTrackVisibility
     }
 

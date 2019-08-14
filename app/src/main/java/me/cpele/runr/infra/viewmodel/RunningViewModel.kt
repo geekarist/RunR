@@ -1,8 +1,10 @@
 package me.cpele.runr.infra.viewmodel
 
 import android.app.Application
+import android.content.res.Configuration
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,7 +22,7 @@ class RunningViewModel(
     private val changePace: ChangePace,
     private val getPace: GetPace,
     private val observePlayerState: ObservePlayerState,
-    private val application: Application
+    application: Application
 ) : ViewModel() {
 
     private val _state = MutableLiveData<State>()
@@ -30,15 +32,19 @@ class RunningViewModel(
         val stepsPerMinText: String = "-",
         val coverUriStr: String,
         val coverVisibility: Int = View.VISIBLE,
-        val noTrackVisibility: Int = View.INVISIBLE
+        val noTrackVisibility: Int = View.INVISIBLE,
+        val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_START
     )
 
     init {
+        _state.value = State(
+            coverUriStr = application.getUrl(R.drawable.cover_placeholder)
+        )
+
         viewModelScope.launch {
             val response = getPace.execute()
             val previousValue = _state.value
-                ?: State(coverUriStr = application.getUrl(R.drawable.cover_placeholder))
-            val newValueWithPace = previousValue.copy(stepsPerMinText = response.paceStr)
+            val newValueWithPace = previousValue?.copy(stepsPerMinText = response.paceStr)
             if (_state.value != newValueWithPace) {
                 withContext(Dispatchers.Main) { _state.value = newValueWithPace }
             }
@@ -92,5 +98,14 @@ class RunningViewModel(
             noTrackVisibility = noTrackVisibility
         )
         withContext(Dispatchers.Main) { _state.value = newValue }
+    }
+
+    fun onOrientationChanged(orientation: Int?) {
+        val scaleType: ImageView.ScaleType =
+            when (orientation) {
+                Configuration.ORIENTATION_PORTRAIT -> ImageView.ScaleType.FIT_START
+                else -> ImageView.ScaleType.FIT_CENTER
+            }
+        _state.value = _state.value?.copy(scaleType = scaleType)
     }
 }
