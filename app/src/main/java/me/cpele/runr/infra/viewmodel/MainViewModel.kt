@@ -6,20 +6,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import me.cpele.runr.domain.adapter.Player
-import me.cpele.runr.infra.Consumable
+import me.cpele.runr.infra.Event
 
 class MainViewModel(private val player: Player) : ViewModel() {
 
-    // TODO: Rename to effect
-    private val _event = MutableLiveData<Consumable<Event>>()
-    val event: LiveData<Consumable<Event>> get() = _event
+    private val _effect = MutableLiveData<Event<Effect>>()
+    val effect: LiveData<Event<Effect>> get() = _effect
 
     init {
         viewModelScope.launch {
             try {
                 player.connect()
             } catch (e: Exception) {
-                _event.value = Consumable(Event.Snack("Error connecting to player"))
+                _effect.value = Event(Effect.Snack("Error connecting to player"))
             }
         }
     }
@@ -29,8 +28,7 @@ class MainViewModel(private val player: Player) : ViewModel() {
         super.onCleared()
     }
 
-    // TODO: Rename to Effect
-    sealed class Event {
-        data class Snack(val message: String) : Event()
+    sealed class Effect {
+        data class Snack(val message: String) : Effect()
     }
 }

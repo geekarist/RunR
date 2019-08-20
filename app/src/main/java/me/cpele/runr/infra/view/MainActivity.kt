@@ -21,14 +21,13 @@ class MainActivity : AppCompatActivity() {
             .of(this, CustomApp.instance.mainViewModelFactory)
             .get(MainViewModel::class.java)
 
-        viewModel.event.observe(this, Observer {
+        viewModel.effect.observe(this, Observer {
             val view = fragment.view ?: return@Observer
 
-            // TODO: Create & use EventObserver
-            when (val eventValue = it.unconsumed) {
-                is MainViewModel.Event.Snack -> Snackbar.make(
+            when (val effect = it.value) {
+                is MainViewModel.Effect.Snack -> Snackbar.make(
                     view,
-                    eventValue.message,
+                    effect.message,
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
