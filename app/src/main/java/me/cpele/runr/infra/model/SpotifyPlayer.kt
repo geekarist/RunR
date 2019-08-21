@@ -70,6 +70,8 @@ class SpotifyPlayer(
                 .setRedirectUri(application.getString(R.string.conf_redirect_uri))
                 .build()
 
+            // TODO: Create sequential version of SpotifyAppRemote
+            // TODO: Create AppRemote interface
             SpotifyAppRemote.connect(application, params, object : Connector.ConnectionListener {
                 override fun onFailure(p0: Throwable?) {
                     if (continuation.isActive) {

@@ -42,27 +42,31 @@ class RunningViewModel(
         )
 
         viewModelScope.launch {
-            val response = getPace.execute()
-            val previousValue = _state.value
-            val newValueWithPace = previousValue?.copy(stepsPerMinText = response.paceStr)
-            if (_state.value != newValueWithPace) {
-                withContext(Dispatchers.Main) { _state.value = newValueWithPace }
-            }
+            try {
+                val response = getPace.execute()
+                val previousValue = _state.value
+                val newValueWithPace = previousValue?.copy(stepsPerMinText = response.paceStr)
+                if (_state.value != newValueWithPace) {
+                    withContext(Dispatchers.Main) { _state.value = newValueWithPace }
+                }
 
-            val channel = observePlayerState.execute()
-            for (playerState in channel) {
-                Log.d(
-                    "COVER_LOAD",
-                    "VM receives player state with cover: ${playerState.coverUrl}"
-                )
-                val newValueWithCover = _state.value?.copy(coverUriStr = playerState.coverUrl)
-                if (_state.value != newValueWithCover) {
+                val channel = observePlayerState.execute()
+                for (playerState in channel) {
                     Log.d(
                         "COVER_LOAD",
-                        "VM detects cover change, emitting value"
+                        "VM receives player state with cover: ${playerState.coverUrl}"
                     )
-                    withContext(Dispatchers.Main) { _state.value = newValueWithCover }
+                    val newValueWithCover = _state.value?.copy(coverUriStr = playerState.coverUrl)
+                    if (_state.value != newValueWithCover) {
+                        Log.d(
+                            "COVER_LOAD",
+                            "VM detects cover change, emitting value"
+                        )
+                        withContext(Dispatchers.Main) { _state.value = newValueWithCover }
+                    }
                 }
+            } catch (e: Exception) {
+                // TODO: Display error
             }
         }
     }
