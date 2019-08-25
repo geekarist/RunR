@@ -17,26 +17,26 @@ import me.cpele.runr.domain.usecase.ChangePace
 import me.cpele.runr.domain.usecase.GetPace
 import me.cpele.runr.domain.usecase.ObservePlayerState
 import me.cpele.runr.getUrl
+import me.cpele.runr.infra.Event
 
 class RunningViewModel(
     private val changePace: ChangePace,
     private val getPace: GetPace,
     private val observePlayerState: ObservePlayerState,
-    application: Application
+    private val application: Application
 ) : ViewModel() {
+
+    private val _effect = MutableLiveData<Event<Effect>>()
+    val effect: LiveData<Event<Effect>> = _effect
 
     private val _state = MutableLiveData<State>()
     val state: LiveData<State> = _state
 
-    data class State(
-        val stepsPerMinText: String = "-",
-        val coverUriStr: String,
-        val coverVisibility: Int = View.VISIBLE,
-        val noTrackVisibility: Int = View.INVISIBLE,
-        val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_START
-    )
-
     init {
+        onInit()
+    }
+
+    fun onInit() {
         _state.value = State(
             coverUriStr = application.getUrl(R.drawable.cover_placeholder)
         )
@@ -66,7 +66,10 @@ class RunningViewModel(
                     }
                 }
             } catch (e: Exception) {
-                // TODO: Display error
+                withContext(Dispatchers.Main) {
+                    _effect.value = Event(Effect.Message("Error: ${e.message}"))
+                }
+                Log.w(javaClass.simpleName, e)
             }
         }
     }
@@ -111,5 +114,17 @@ class RunningViewModel(
                 else -> ImageView.ScaleType.FIT_CENTER
             }
         _state.value = _state.value?.copy(scaleType = scaleType)
+    }
+
+    data class State(
+        val stepsPerMinText: String = "-",
+        val coverUriStr: String,
+        val coverVisibility: Int = View.VISIBLE,
+        val noTrackVisibility: Int = View.INVISIBLE,
+        val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_START
+    )
+
+    sealed class Effect {
+        data class Message(val message: String) : Effect()
     }
 }

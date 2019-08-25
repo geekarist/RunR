@@ -15,9 +15,11 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_running.*
 import me.cpele.runr.CustomApp
 import me.cpele.runr.R
+import me.cpele.runr.infra.Event
 import me.cpele.runr.infra.viewmodel.RunningViewModel
 
 class RunningFragment : Fragment() {
@@ -39,11 +41,25 @@ class RunningFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.state.observe(this, Observer { render(it) })
+        viewModel.effect.observe(this, Observer { render(it) })
 
         running_spm_increase.setOnClickListener { viewModel.onIncreasePace() }
         running_spm_decrease.setOnClickListener { viewModel.onDecreasePace() }
 
         viewModel.onOrientationChanged(resources.configuration?.orientation)
+    }
+
+    private fun render(event: Event<RunningViewModel.Effect>?) {
+        when (val effect = event?.value) {
+            is RunningViewModel.Effect.Message -> view?.let {
+                Snackbar.make(
+                    it,
+                    effect.message,
+                    Snackbar.LENGTH_INDEFINITE
+                ).setAction(getString(R.string.running_retry)) { viewModel.onInit() }
+                    .show()
+            }
+        }
     }
 
     private fun render(state: RunningViewModel.State) {

@@ -1,5 +1,6 @@
 package me.cpele.runr.infra.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,7 +19,7 @@ class MainViewModel(private val player: Player) : ViewModel() {
             try {
                 player.connect()
             } catch (e: Exception) {
-                _effect.value = Event(Effect.Snack("Error connecting to player"))
+                Log.i(javaClass.simpleName, "Error connecting to player")
             }
         }
     }
