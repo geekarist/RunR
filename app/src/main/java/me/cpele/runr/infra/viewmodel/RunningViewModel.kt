@@ -56,7 +56,8 @@ class RunningViewModel(
                     }
                 }
             } catch (e: Exception) {
-                _effect.dispatchValue(Event(Effect.Message("Error: ${e.message}")))
+                val newValue: Event<Effect> = Event(Effect.Message("Error: ${e.message}"))
+                _effect.dispatchValue(newValue)
                 Log.w(javaClass.simpleName, e)
             }
         }
