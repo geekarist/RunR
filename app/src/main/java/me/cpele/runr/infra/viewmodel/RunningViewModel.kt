@@ -9,9 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import me.cpele.runr.R
 import me.cpele.runr.domain.usecase.ChangePace
 import me.cpele.runr.domain.usecase.GetPace
@@ -47,28 +45,18 @@ class RunningViewModel(
                 val previousValue = _state.value
                 val newValueWithPace = previousValue?.copy(stepsPerMinText = response.paceStr)
                 if (_state.value != newValueWithPace) {
-                    withContext(Dispatchers.Main) { _state.value = newValueWithPace }
+                    _state.dispatchValue(newValueWithPace)
                 }
 
                 val channel = observePlayerState.execute()
                 for (playerState in channel) {
-                    Log.d(
-                        "COVER_LOAD",
-                        "VM receives player state with cover: ${playerState.coverUrl}"
-                    )
                     val newValueWithCover = _state.value?.copy(coverUriStr = playerState.coverUrl)
                     if (_state.value != newValueWithCover) {
-                        Log.d(
-                            "COVER_LOAD",
-                            "VM detects cover change, emitting value"
-                        )
-                        withContext(Dispatchers.Main) { _state.value = newValueWithCover }
+                        _state.dispatchValue(newValueWithCover)
                     }
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    _effect.value = Event(Effect.Message("Error: ${e.message}"))
-                }
+                _effect.dispatchValue(Event(Effect.Message("Error: ${e.message}")))
                 Log.w(javaClass.simpleName, e)
             }
         }
@@ -104,7 +92,7 @@ class RunningViewModel(
             coverVisibility = coverVisibility,
             noTrackVisibility = noTrackVisibility
         )
-        withContext(Dispatchers.Main) { _state.value = newValue }
+        _state.dispatchValue(newValue)
     }
 
     fun onOrientationChanged(orientation: Int?) {
@@ -128,3 +116,4 @@ class RunningViewModel(
         data class Message(val message: String) : Effect()
     }
 }
+
