@@ -30,6 +30,6 @@ class MainViewModel(private val player: Player) : ViewModel() {
     }
 
     sealed class Effect {
-        data class Snack(val message: String) : Effect()
+        data class Message(val message: String) : Effect()
     }
 }

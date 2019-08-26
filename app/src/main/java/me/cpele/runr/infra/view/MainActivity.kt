@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
             val view = fragment.view ?: return@Observer
 
             when (val effect = it.value) {
-                is MainViewModel.Effect.Snack -> Snackbar.make(
+                is MainViewModel.Effect.Message -> Snackbar.make(
                     view,
                     effect.message,
                     Snackbar.LENGTH_SHORT
