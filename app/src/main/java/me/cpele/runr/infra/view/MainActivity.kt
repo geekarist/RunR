@@ -24,12 +24,14 @@ class MainActivity : AppCompatActivity() {
         viewModel.effect.observe(this, Observer {
             val view = fragment.view ?: return@Observer
 
-            when (val effect = it.value) {
-                is MainViewModel.Effect.Message -> Snackbar.make(
+            when (it.value) {
+                is MainViewModel.Effect.ConnectionError -> Snackbar.make(
                     view,
-                    effect.message,
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                    "Error connecting to player",
+                    Snackbar.LENGTH_INDEFINITE
+                ).setAction(R.string.common_retry) {
+                    viewModel.onInit()
+                }.show()
             }
         })
     }

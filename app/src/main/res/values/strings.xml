@@ -3,6 +3,8 @@
 
     <string name="conf_redirect_uri">me.cpele.runr://spotify-redirect</string>
 
+    <string name="common_retry">Retry</string>
+
     <string name="login_please_wait">Logging in…</string>
 
     <string name="start_run">Start Run</string>
@@ -13,5 +15,4 @@
     <string name="running_spm_increase">+5</string>
     <string name="running_spm_default_value">\u2014</string>
     <string name="running_default_cover_desc">Current track cover</string>
-    <string name="running_retry">Retry</string>
 </resources>

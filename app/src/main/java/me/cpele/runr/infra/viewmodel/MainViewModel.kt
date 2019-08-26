@@ -15,11 +15,16 @@ class MainViewModel(private val player: Player) : ViewModel() {
     val effect: LiveData<Event<Effect>> get() = _effect
 
     init {
+        onInit()
+    }
+
+    fun onInit() {
         viewModelScope.launch {
             try {
                 player.connect()
             } catch (e: Exception) {
                 Log.i(javaClass.simpleName, "Error connecting to player")
+                _effect.dispatchValue(Event(Effect.ConnectionError))
             }
         }
     }
@@ -30,6 +35,6 @@ class MainViewModel(private val player: Player) : ViewModel() {
     }
 
     sealed class Effect {
-        data class Message(val message: String) : Effect()
+        object ConnectionError : Effect()
     }
 }

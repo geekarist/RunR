@@ -3,6 +3,7 @@ package me.cpele.runr.infra.view
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,6 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_running.*
 import me.cpele.runr.CustomApp
 import me.cpele.runr.R
@@ -51,14 +51,8 @@ class RunningFragment : Fragment() {
 
     private fun render(event: Event<RunningViewModel.Effect>?) {
         when (val effect = event?.value) {
-            is RunningViewModel.Effect.Message -> view?.let {
-                Snackbar.make(
-                    it,
-                    effect.message,
-                    Snackbar.LENGTH_INDEFINITE
-                ).setAction(getString(R.string.running_retry)) { viewModel.onInit() }
-                    .show()
-            }
+            is RunningViewModel.Effect.Message ->
+                Log.i(javaClass.simpleName, effect.message)
         }
     }
 
