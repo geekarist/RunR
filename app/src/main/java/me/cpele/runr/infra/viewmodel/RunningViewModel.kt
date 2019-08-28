@@ -31,14 +31,9 @@ class RunningViewModel(
     val state: LiveData<State> = _state
 
     init {
-        onInit()
-    }
-
-    fun onInit() {
         _state.value = State(
             coverUriStr = application.getUrl(R.drawable.cover_placeholder)
         )
-
         viewModelScope.launch {
             try {
                 val response = getPace.execute()
