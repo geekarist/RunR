@@ -3,6 +3,7 @@ package me.cpele.runr.domain.usecase
 import kotlinx.coroutines.suspendCancellableCoroutine
 import me.cpele.runr.domain.adapter.AuthResponseRepository
 import me.cpele.runr.domain.adapter.AuthorizationAsync
+import me.cpele.runr.domain.api.model.Auth
 import me.cpele.runr.domain.entity.isNotExpired
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -25,15 +26,15 @@ class GetAuth(
 
         return suspendCancellableCoroutine { continuation ->
 
-            authorization.start {
-                authResponseRepository.save(it)
+            authorization.start { auth: Auth? ->
+                authResponseRepository.save(auth)
                 when {
-                    it?.accessToken != null -> continuation.resume(
+                    auth?.accessToken != null -> continuation.resume(
                         Response(
-                            it.accessToken
+                            auth.accessToken
                         )
                     )
-                    it?.error != null -> continuation.resumeWithException(Exception("Error: $it"))
+                    auth?.error != null -> continuation.resumeWithException(Exception("Error: $auth"))
                     else -> {
                         val exception = Exception("Auth response is null or empty")
                         continuation.resumeWithException(exception)
