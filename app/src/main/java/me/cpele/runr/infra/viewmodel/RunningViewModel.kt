@@ -11,10 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import me.cpele.runr.R
-import me.cpele.runr.domain.usecase.ChangePace
-import me.cpele.runr.domain.usecase.GetPace
-import me.cpele.runr.domain.usecase.ObservePlayerState
-import me.cpele.runr.domain.usecase.WaitForPlayer
+import me.cpele.runr.domain.usecase.*
 import me.cpele.runr.getUrl
 import me.cpele.runr.infra.Event
 
@@ -23,7 +20,8 @@ class RunningViewModel(
     private val getPace: GetPace,
     private val observePlayerState: ObservePlayerState,
     application: Application,
-    private val waitForPlayer: WaitForPlayer
+    private val waitForPlayer: WaitForPlayer,
+    private val startRun: StartRun
 ) : ViewModel() {
 
     private val _effect = MutableLiveData<Event<Effect>>()
@@ -56,6 +54,9 @@ class RunningViewModel(
                 if (_state.value != newValueWithPace) {
                     _state.dispatchValue(newValueWithPace)
                 }
+
+                // Play music
+                startRun.execute(response.pace)
 
                 // Display player state
                 val channel = observePlayerState.execute()

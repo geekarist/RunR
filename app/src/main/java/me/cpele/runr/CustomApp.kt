@@ -61,7 +61,8 @@ class CustomApp : Application() {
             getPace = getPaceUseCase,
             observePlayerState = emitPlayerStateUseCase,
             application = this,
-            waitForPlayer = waitForPlayer
+            waitForPlayer = waitForPlayer,
+            startRun = startRunUseCase
         )
     }
 
