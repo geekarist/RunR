@@ -5,6 +5,8 @@ import me.cpele.runr.domain.api.model.Playlist
 
 interface Player {
 
+    val isConnected: Boolean
+
     suspend fun connect()
     suspend fun play(playlist: Playlist)
     suspend fun state(): State?

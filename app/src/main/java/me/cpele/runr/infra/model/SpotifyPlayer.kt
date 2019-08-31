@@ -32,22 +32,25 @@ class SpotifyPlayer(
     private val job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Default
-
     private val persistJob = Job()
+
     private val persistDispatch = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
     private val persistContext = persistJob + persistDispatch
     private val persistScope = CoroutineScope(persistContext)
-
     private var appRemote: SpotifyAppRemote? = null
 
+    private var _isConnected: Boolean = false
+    override val isConnected: Boolean
+        get() = _isConnected
+
     override suspend fun play(playlist: Playlist) {
-        connect()
         startPlaying(playlist)
     }
 
     override suspend fun connect() {
         ensureUserConnected()
         ensureRemoteConnected()
+        _isConnected = true
     }
 
     private suspend fun ensureUserConnected() {
@@ -115,7 +118,6 @@ class SpotifyPlayer(
     @Suppress("EXPERIMENTAL_API_USAGE")
     override fun observeStateForever(): ReceiveChannel<Player.State> =
         produce {
-            withContext(Dispatchers.Main) { connect() }
             val subscription = appRemote?.playerApi?.subscribeToPlayerState()
             subscription?.setEventCallback {
                 // Launch on single thread to prevent concurrency issues
@@ -154,5 +156,6 @@ class SpotifyPlayer(
         appRemote = null
         job.cancelChildren()
         persistJob.cancelChildren()
+        _isConnected = false
     }
 }

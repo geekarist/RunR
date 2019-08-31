@@ -14,6 +14,7 @@ import me.cpele.runr.R
 import me.cpele.runr.domain.usecase.ChangePace
 import me.cpele.runr.domain.usecase.GetPace
 import me.cpele.runr.domain.usecase.ObservePlayerState
+import me.cpele.runr.domain.usecase.WaitForPlayer
 import me.cpele.runr.getUrl
 import me.cpele.runr.infra.Event
 
@@ -21,7 +22,8 @@ class RunningViewModel(
     private val changePace: ChangePace,
     private val getPace: GetPace,
     private val observePlayerState: ObservePlayerState,
-    private val application: Application
+    application: Application,
+    private val waitForPlayer: WaitForPlayer
 ) : ViewModel() {
 
     private val _effect = MutableLiveData<Event<Effect>>()
@@ -36,6 +38,7 @@ class RunningViewModel(
         )
         viewModelScope.launch {
             try {
+                waitForPlayer.execute()
                 val response = getPace.execute()
                 val previousValue = _state.value
                 val newValueWithPace = previousValue?.copy(stepsPerMinText = response.paceStr)
