@@ -16,6 +16,14 @@
         - Display Increase/Decrease buttons 
         - Display song cover
         - Start a playlist with current pace
+- Fix: Change pace when not connected
+    - Uninstall app, clear Spotify app data: `adb uninstall me.cpele.runr.debug && adb shell pm clear com.spotify.music`
+    - Cancel login
+    - Increase pace
+    - 👉 App should:
+        - Not crash
+        - Display 'not connected' message and Retry button
+    - Retry should work
 - Improve: Create PlayerConnectActivity
 
 ## Misc.
