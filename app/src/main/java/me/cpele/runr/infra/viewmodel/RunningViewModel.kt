@@ -33,19 +33,31 @@ class RunningViewModel(
     val state: LiveData<State> = _state
 
     init {
+
+        // Initial view state
         _state.value = State(
             coverUriStr = application.getUrl(R.drawable.cover_placeholder)
         )
+
         viewModelScope.launch {
             try {
                 waitForPlayer.execute()
+
+                // Ready
+                _state.dispatchValue(
+                    _state.value?.copy(
+                        isChangePaceEnabled = true
+                    )
+                )
+
+                // Display pace
                 val response = getPace.execute()
-                val previousValue = _state.value
-                val newValueWithPace = previousValue?.copy(stepsPerMinText = response.paceStr)
+                val newValueWithPace = _state.value?.copy(stepsPerMinText = response.paceStr)
                 if (_state.value != newValueWithPace) {
                     _state.dispatchValue(newValueWithPace)
                 }
 
+                // Display player state
                 val channel = observePlayerState.execute()
                 for (playerState in channel) {
                     val newValueWithCover = _state.value?.copy(coverUriStr = playerState.coverUrl)
@@ -108,7 +120,8 @@ class RunningViewModel(
         val coverUriStr: String,
         val coverVisibility: Int = View.VISIBLE,
         val noTrackVisibility: Int = View.INVISIBLE,
-        val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_START
+        val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_START,
+        val isChangePaceEnabled: Boolean = false
     )
 
     sealed class Effect {

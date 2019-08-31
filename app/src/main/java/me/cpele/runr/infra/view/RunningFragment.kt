@@ -64,6 +64,8 @@ class RunningFragment : Fragment() {
         running_track_cover.visibility = state.coverVisibility
         running_track_cover.scaleType = state.scaleType
         running_no_track.visibility = state.noTrackVisibility
+        running_spm_increase.isEnabled = state.isChangePaceEnabled
+        running_spm_decrease.isEnabled = state.isChangePaceEnabled
     }
 
     private fun loadCover(url: String?, target: ImageView, onLoadFinished: () -> Unit) {
