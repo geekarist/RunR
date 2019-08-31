@@ -119,15 +119,17 @@ class SpotifyPlayer(
     override fun observeStateForever(): ReceiveChannel<Player.State> =
         produce {
             val subscription = appRemote?.playerApi?.subscribeToPlayerState()
-            subscription?.setEventCallback {
+            subscription?.setEventCallback { playerState ->
+                playerState?.track ?: return@setEventCallback
+
                 // Launch on single thread to prevent concurrency issues
                 persistScope.launch {
                     Log.d("COVER_LOAD", "Player state subscription received event")
-                    Log.d("COVER_LOAD", "Player persists image: ${it.track.imageUri}")
-                    val url = it.track.imageUri.persist()
+                    Log.d("COVER_LOAD", "Player persists image: ${playerState.track.imageUri}")
+                    val url = playerState.track.imageUri.persist()
                     Log.d("COVER_LOAD", "Player has persisted image to: $url")
                     Log.d("COVER_LOAD", "Player sends player state")
-                    send(Player.State(it.isPaused, url, null))
+                    send(Player.State(playerState.isPaused, url, null))
                     Log.d("COVER_LOAD", "Player state sent")
                 }
             }
