@@ -1,10 +1,10 @@
 ## Planned
 
-- Fix: Display progress bar when loading cover
 - Improve: Create PlayerConnectActivity
 
 ## Changelog (latest first)
 
+- Fix: Display progress bar when loading cover
 - Fix: Hide progress bar when no track found
 - Improve: Show progress bar after changing pace
 - Fix: Start playlist after login

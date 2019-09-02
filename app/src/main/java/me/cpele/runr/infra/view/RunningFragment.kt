@@ -11,6 +11,7 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -67,14 +68,22 @@ class RunningFragment : Fragment() {
         running_spm_decrease.isEnabled = state.isChangePaceEnabled
     }
 
-    private fun loadCover(url: String?, target: ImageView, onLoadFinished: () -> Unit = {}) {
+    private fun loadCover(url: String?, target: ImageView) {
         if (url == null) {
             Glide.with(this).clear(target)
-            return onLoadFinished()
+            return
+        }
+
+        val context = context ?: return
+
+        val progressDrawable = CircularProgressDrawable(context).apply {
+            setStyle(CircularProgressDrawable.LARGE)
+            start()
         }
 
         Glide.with(this)
             .load(url)
+            .placeholder(progressDrawable)
             .timeout(10000)
             .addListener(object : RequestListener<Drawable?> {
                 override fun onLoadFailed(
@@ -83,7 +92,6 @@ class RunningFragment : Fragment() {
                     target: Target<Drawable?>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    onLoadFinished()
                     return false
                 }
 
@@ -94,7 +102,6 @@ class RunningFragment : Fragment() {
                     dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    onLoadFinished()
                     return false
                 }
             })
