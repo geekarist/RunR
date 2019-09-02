@@ -58,9 +58,8 @@ class RunningFragment : Fragment() {
 
     private fun render(state: RunningViewModel.State) {
         running_spm_value.text = state.stepsPerMinText
-        loadCover(state.coverUriStr, running_track_cover) {
-            running_track_cover_progress.visibility = View.GONE
-        }
+        running_progress.visibility = state.progressVisibility
+        loadCover(state.coverUriStr, running_track_cover)
         running_track_cover.visibility = state.coverVisibility
         running_track_cover.scaleType = state.scaleType
         running_no_track.visibility = state.noTrackVisibility
@@ -68,7 +67,12 @@ class RunningFragment : Fragment() {
         running_spm_decrease.isEnabled = state.isChangePaceEnabled
     }
 
-    private fun loadCover(url: String?, target: ImageView, onLoadFinished: () -> Unit) {
+    private fun loadCover(url: String?, target: ImageView, onLoadFinished: () -> Unit = {}) {
+        if (url == null) {
+            Glide.with(this).clear(target)
+            return onLoadFinished()
+        }
+
         Glide.with(this)
             .load(url)
             .timeout(10000)

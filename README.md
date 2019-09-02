@@ -1,11 +1,10 @@
 ## Planned
 
-- Improve: Show progress after changing pace
-
 - Improve: Create PlayerConnectActivity
 
-## Changelog
+## Changelog (latest first)
 
+- Improve: Show progress bar after changing pace
 - Fix: Start playlist after login
 - Fix: Let the user cancel login
 - Fix: Prevent changing pace when not connected

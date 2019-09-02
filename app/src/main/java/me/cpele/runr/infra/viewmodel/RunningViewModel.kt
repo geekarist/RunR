@@ -10,9 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import me.cpele.runr.R
 import me.cpele.runr.domain.usecase.*
-import me.cpele.runr.getUrl
 import me.cpele.runr.infra.Event
 
 class RunningViewModel(
@@ -33,9 +31,7 @@ class RunningViewModel(
     init {
 
         // Initial view state
-        _state.value = State(
-            coverUriStr = application.getUrl(R.drawable.cover_placeholder)
-        )
+        _state.value = State()
 
         viewModelScope.launch {
             try {
@@ -61,7 +57,11 @@ class RunningViewModel(
                 // Display player state
                 val channel = observePlayerState.execute()
                 for (playerState in channel) {
-                    val newValueWithCover = _state.value?.copy(coverUriStr = playerState.coverUrl)
+                    val newValueWithCover = _state.value?.copy(
+                        coverUriStr = playerState.coverUrl,
+                        progressVisibility = View.INVISIBLE,
+                        coverVisibility = View.VISIBLE
+                    )
                     if (_state.value != newValueWithCover) {
                         _state.dispatchValue(newValueWithCover)
                     }
@@ -75,10 +75,12 @@ class RunningViewModel(
     }
 
     fun onIncreasePace() = viewModelScope.launch {
+        _state.dispatchLoading()
         onChangePace(ChangePace.Direction.Increase)
     }
 
     fun onDecreasePace() = viewModelScope.launch {
+        _state.dispatchLoading()
         onChangePace(ChangePace.Direction.Decrease)
     }
 
@@ -116,11 +118,23 @@ class RunningViewModel(
         _state.value = _state.value?.copy(scaleType = scaleType)
     }
 
+    private suspend fun MutableLiveData<State>.dispatchLoading() {
+        dispatchValue(
+            value?.copy(
+                coverVisibility = View.INVISIBLE,
+                noTrackVisibility = View.INVISIBLE,
+                progressVisibility = View.VISIBLE,
+                coverUriStr = null
+            )
+        )
+    }
+
     data class State(
         val stepsPerMinText: String = "-",
-        val coverUriStr: String,
-        val coverVisibility: Int = View.VISIBLE,
+        val coverUriStr: String? = null,
+        val coverVisibility: Int = View.INVISIBLE,
         val noTrackVisibility: Int = View.INVISIBLE,
+        val progressVisibility: Int = View.VISIBLE,
         val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_START,
         val isChangePaceEnabled: Boolean = false
     )

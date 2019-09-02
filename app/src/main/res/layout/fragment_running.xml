@@ -62,7 +62,7 @@
         app:layout_constraintTop_toTopOf="@+id/running_spm_value" />
 
     <ProgressBar
-        android:id="@+id/running_track_cover_progress"
+        android:id="@+id/running_progress"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
