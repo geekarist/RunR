@@ -73,16 +73,17 @@ class RunningViewModel(
     }
 
     fun onIncreasePace() = viewModelScope.launch {
-        _state.dispatchLoading()
         onChangePace(ChangePace.Direction.Increase)
     }
 
     fun onDecreasePace() = viewModelScope.launch {
-        _state.dispatchLoading()
         onChangePace(ChangePace.Direction.Decrease)
     }
 
     private suspend fun onChangePace(direction: ChangePace.Direction) {
+
+        _state.dispatchLoading()
+
         val response = changePace.execute(direction)
 
         val coverVisibility: Int
@@ -102,7 +103,8 @@ class RunningViewModel(
         val newValue = oldValue?.copy(
             stepsPerMinText = response.newPaceStr,
             coverVisibility = coverVisibility,
-            noTrackVisibility = noTrackVisibility
+            noTrackVisibility = noTrackVisibility,
+            progressVisibility = View.INVISIBLE
         )
         _state.dispatchValue(newValue)
     }
