@@ -60,7 +60,6 @@ class CustomApp : Application() {
             changePace = increasePaceUseCase,
             getPace = getPaceUseCase,
             observePlayerState = emitPlayerStateUseCase,
-            application = this,
             waitForPlayer = waitForPlayer,
             startRun = startRunUseCase
         )

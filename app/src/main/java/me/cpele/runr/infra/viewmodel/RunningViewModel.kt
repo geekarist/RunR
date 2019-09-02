@@ -1,6 +1,5 @@
 package me.cpele.runr.infra.viewmodel
 
-import android.app.Application
 import android.content.res.Configuration
 import android.util.Log
 import android.view.View
@@ -17,7 +16,6 @@ class RunningViewModel(
     private val changePace: ChangePace,
     private val getPace: GetPace,
     private val observePlayerState: ObservePlayerState,
-    application: Application,
     private val waitForPlayer: WaitForPlayer,
     private val startRun: StartRun
 ) : ViewModel() {

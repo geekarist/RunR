@@ -100,7 +100,7 @@
         android:contentDescription="@string/running_default_cover_desc"
         android:gravity="center|top"
         android:paddingTop="24dp"
-        android:text="No track found"
+        android:text="@string/running_no_track_found"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

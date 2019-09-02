@@ -15,4 +15,5 @@
     <string name="running_spm_increase">+5</string>
     <string name="running_spm_default_value">\u2014</string>
     <string name="running_default_cover_desc">Current track cover</string>
+    <string name="running_no_track_found">No track found</string>
 </resources>
