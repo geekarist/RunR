@@ -1,6 +1,5 @@
 package me.cpele.runr.infra.viewmodel
 
-import android.content.res.Configuration
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -109,15 +108,6 @@ class RunningViewModel(
         _state.dispatchValue(newValue)
     }
 
-    fun onOrientationChanged(orientation: Int?) {
-        val scaleType: ImageView.ScaleType =
-            when (orientation) {
-                Configuration.ORIENTATION_PORTRAIT -> ImageView.ScaleType.FIT_START
-                else -> ImageView.ScaleType.FIT_CENTER
-            }
-        _state.value = _state.value?.copy(scaleType = scaleType)
-    }
-
     private suspend fun MutableLiveData<State>.dispatchLoading() {
         dispatchValue(
             value?.copy(
@@ -135,7 +125,7 @@ class RunningViewModel(
         val coverVisibility: Int = View.INVISIBLE,
         val noTrackVisibility: Int = View.INVISIBLE,
         val progressVisibility: Int = View.VISIBLE,
-        val scaleType: ImageView.ScaleType = ImageView.ScaleType.FIT_START,
+        val scaleType: ImageView.ScaleType = ImageView.ScaleType.CENTER_CROP,
         val isChangePaceEnabled: Boolean = false
     )
 

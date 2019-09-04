@@ -46,8 +46,6 @@ class RunningFragment : Fragment() {
 
         running_spm_increase.setOnClickListener { viewModel.onIncreasePace() }
         running_spm_decrease.setOnClickListener { viewModel.onDecreasePace() }
-
-        viewModel.onOrientationChanged(resources.configuration?.orientation)
     }
 
     private fun render(event: Event<RunningViewModel.Effect>?) {
