@@ -2,7 +2,6 @@ package me.cpele.runr.infra.model
 
 import android.app.Application
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.core.net.toUri
 import com.spotify.android.appremote.api.ConnectionParams
@@ -124,13 +123,8 @@ class SpotifyPlayer(
 
                 // Launch on single thread to prevent concurrency issues
                 persistScope.launch {
-                    Log.d("COVER_LOAD", "Player state subscription received event")
-                    Log.d("COVER_LOAD", "Player persists image: ${playerState.track.imageUri}")
                     val url = playerState.track.imageUri.persist()
-                    Log.d("COVER_LOAD", "Player has persisted image to: $url")
-                    Log.d("COVER_LOAD", "Player sends player state")
                     send(Player.State(playerState.isPaused, url, null))
-                    Log.d("COVER_LOAD", "Player state sent")
                 }
             }
             invokeOnClose { subscription?.cancel() }
@@ -142,13 +136,10 @@ class SpotifyPlayer(
         val dir = application.cacheDir
         val cacheFile = File(dir, "$raw.wepb")
         if (!cacheFile.exists()) {
-            Log.d("COVER_LOAD", "Player detects no cached file and creates one")
             val bitmap = appRemote?.imagesApi?.getImage(this, Image.Dimension.LARGE)?.await()?.data
             val output = cacheFile.outputStream()
             bitmap?.compress(Bitmap.CompressFormat.WEBP, 100, output)
             output.close()
-        } else {
-            Log.d("COVER_LOAD", "Player detects a cached file and returns its url")
         }
         return cacheFile.toUri().toString()
     }
