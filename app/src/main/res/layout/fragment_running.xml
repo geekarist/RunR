@@ -23,13 +23,18 @@
         android:id="@+id/running_spm_background"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:background="@drawable/bg_card_round_corners"
         app:layout_constraintBottom_toBottomOf="@+id/running_spm_value"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/running_spm_spacer_end"
+        app:layout_constraintStart_toStartOf="@id/running_spm_spacer_start"
         app:layout_constraintTop_toTopOf="@+id/running_spm_label" />
+
+    <View
+        android:id="@+id/running_spm_spacer_start"
+        android:layout_width="16dp"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@id/running_spm_decrease" />
 
     <Button
         android:id="@+id/running_spm_decrease"
@@ -84,6 +89,13 @@
         app:layout_constraintBottom_toBottomOf="@+id/running_spm_value"
         app:layout_constraintStart_toEndOf="@+id/running_spm_value"
         app:layout_constraintTop_toTopOf="@+id/running_spm_value" />
+
+    <View
+        android:id="@+id/running_spm_spacer_end"
+        android:layout_width="16dp"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@id/running_spm_increase" />
 
     <ProgressBar
         android:id="@+id/running_progress"
