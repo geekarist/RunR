@@ -11,7 +11,6 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -74,14 +73,8 @@ class RunningFragment : Fragment() {
 
         val context = context ?: return
 
-        val progressDrawable = CircularProgressDrawable(context).apply {
-            setStyle(CircularProgressDrawable.LARGE)
-            start()
-        }
-
         Glide.with(this)
             .load(url)
-            .placeholder(progressDrawable)
             .timeout(10000)
             .addListener(object : RequestListener<Drawable?> {
                 override fun onLoadFailed(
