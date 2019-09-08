@@ -85,6 +85,7 @@
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="@string/running_spm_increase"
         app:layout_constraintBottom_toBottomOf="@+id/running_spm_value"
         app:layout_constraintStart_toEndOf="@+id/running_spm_value"
@@ -193,6 +194,7 @@
         android:id="@+id/running_track_info_spacer_end"
         android:layout_width="16dp"
         android:layout_height="match_parent"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@id/running_track_info_barrier_end" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
