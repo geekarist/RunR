@@ -116,7 +116,9 @@ class RunningViewModel(
                 coverVisibility = View.INVISIBLE,
                 noTrackVisibility = View.INVISIBLE,
                 progressVisibility = View.VISIBLE,
-                coverUriStr = null
+                coverUriStr = null,
+                trackTitle = "-",
+                trackArtist = "-"
             )
         )
     }
