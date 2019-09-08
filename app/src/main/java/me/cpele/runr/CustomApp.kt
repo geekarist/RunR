@@ -13,6 +13,7 @@ import me.cpele.runr.infra.model.data.SharedPrefsPaceRepository
 import me.cpele.runr.infra.model.data.SpotifyPlaylistRepository
 import me.cpele.runr.infra.model.data.SpotifyTrackRepository
 import me.cpele.runr.infra.model.network.SpotifyService
+import me.cpele.runr.infra.viewmodel.CheckSetupViewModel
 import me.cpele.runr.infra.viewmodel.MainViewModel
 import me.cpele.runr.infra.viewmodel.RunningViewModel
 import me.cpele.runr.infra.viewmodel.ViewModelFactory
@@ -45,7 +46,7 @@ class CustomApp : Application() {
     private val playlistRepository =
         SpotifyPlaylistRepository(spotifyService, tokenProvider)
     private val paceRepository = SharedPrefsPaceRepository(this)
-    val player = SpotifyPlayer(this, tokenProvider)
+    private val player = SpotifyPlayer(this, tokenProvider)
     private val startRunUseCase =
         StartRun(trackRepository, playlistRepository, player)
     private val increasePaceUseCase =
@@ -53,6 +54,7 @@ class CustomApp : Application() {
     private val getPaceUseCase = GetPace(paceRepository)
     private val emitPlayerStateUseCase = ObservePlayerState(player)
     private val waitForPlayer = WaitForPlayer(player)
+    private val checkSetup = CheckSetup()
 
     val mainViewModelFactory = ViewModelFactory { MainViewModel(player) }
     val runningViewModelFactory = ViewModelFactory {
@@ -64,6 +66,7 @@ class CustomApp : Application() {
             startRun = startRunUseCase
         )
     }
+    val checkSetupViewModelFactory = ViewModelFactory { CheckSetupViewModel() }
 
     override fun onCreate() {
         super.onCreate()

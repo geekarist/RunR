@@ -3,11 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation.xml"
-    app:startDestination="@id/runningFragment">
+    app:startDestination="@id/checkSetupFragment">
+
+    <fragment
+        android:id="@+id/checkSetupFragment"
+        android:name="me.cpele.runr.infra.view.CheckSetupFragment"
+        android:label="fragment_check_setup"
+        tools:layout="@layout/fragment_check_setup">
+        <action
+            android:id="@+id/action_checkSetupFragment_to_runningFragment"
+            app:destination="@id/runningFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/runningFragment"
         android:name="me.cpele.runr.infra.view.RunningFragment"
         android:label="fragment_running"
         tools:layout="@layout/fragment_running" />
+
 </navigation>

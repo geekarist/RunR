@@ -14,10 +14,6 @@ class MainViewModel(private val player: Player) : ViewModel() {
     private val _effect = MutableLiveData<Event<Effect>>()
     val effect: LiveData<Event<Effect>> get() = _effect
 
-    init {
-        onInit()
-    }
-
     fun onInit() {
         viewModelScope.launch {
             try {
@@ -34,7 +30,12 @@ class MainViewModel(private val player: Player) : ViewModel() {
         super.onCleared()
     }
 
+    fun onSetupCompleted() = viewModelScope.launch {
+        _effect.dispatchValue(Effect.SetupCompleted)
+    }
+
     sealed class Effect {
+        object SetupCompleted : Effect()
         object ConnectionError : Effect()
     }
 }

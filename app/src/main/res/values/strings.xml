@@ -16,4 +16,12 @@
     <string name="running_spm_default_value">\u2014</string>
     <string name="running_default_cover_desc">Current track cover</string>
     <string name="running_no_track_found">No track found</string>
+
+    <string name="check_setup_spotify_please_install">1. Install Spotify</string>
+    <string name="check_setup_spotify_open_store">Open Play Store</string>
+    <string name="check_setup_spotify_please_login">2. Login on Spotify</string>
+    <string name="check_setup_spotify_login">Login</string>
+    <string name="check_setup_headline">Before using this application, you need to setup Spotify on your device. Please complete the following steps.</string>
+    <string name="check_setup_lets_go">3. Let\'s go!</string>
+    <string name="check_setup_start_running">Start Running</string>
 </resources>

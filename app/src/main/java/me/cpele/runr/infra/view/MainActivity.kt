@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
             val view = fragment.view ?: return@Observer
 
             when (it.value) {
+
                 is MainViewModel.Effect.ConnectionError -> Snackbar.make(
                     view,
                     "Error connecting to player",
@@ -32,6 +33,8 @@ class MainActivity : AppCompatActivity() {
                 ).setAction(R.string.common_retry) {
                     viewModel.onInit()
                 }.show()
+
+                is MainViewModel.Effect.SetupCompleted -> viewModel.onInit()
             }
         })
     }
