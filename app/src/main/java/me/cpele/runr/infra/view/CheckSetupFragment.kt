@@ -52,7 +52,9 @@ class CheckSetupFragment : Fragment() {
 
     private fun render(state: CheckSetupViewModel.State) {
         check_setup_install_button.visibility = state.spotifyInstallButtonVisibility
+        check_setup_install_done_text.visibility = state.spotifyInstallDoneVisibility
         check_setup_login_button.visibility = state.spotifyLoginButtonVisibility
+        check_setup_login_done_text.visibility = state.spotifyLoginDoneVisibility
         check_setup_start_button.visibility = state.startRunningButtonVisibility
     }
 

@@ -28,13 +28,16 @@ class CheckSetupViewModel(private val checkSetup: CheckSetup) : ViewModel() {
                 CheckSetup.Status.PLAYER_NOT_CONNECTED -> _state.dispatchValue(
                     _state.value?.copy(
                         spotifyInstallButtonVisibility = View.GONE,
+                        spotifyInstallDoneVisibility = View.VISIBLE,
                         spotifyLoginButtonVisibility = View.VISIBLE
                     )
                 )
                 CheckSetup.Status.READY -> _state.dispatchValue(
                     _state.value?.copy(
                         spotifyInstallButtonVisibility = View.GONE,
+                        spotifyInstallDoneVisibility = View.VISIBLE,
                         spotifyLoginButtonVisibility = View.GONE,
+                        spotifyLoginDoneVisibility = View.VISIBLE,
                         startRunningButtonVisibility = View.VISIBLE
                     )
                 )
@@ -47,8 +50,7 @@ class CheckSetupViewModel(private val checkSetup: CheckSetup) : ViewModel() {
         val spotifyInstallDoneVisibility: Int = View.GONE,
         val spotifyLoginButtonVisibility: Int = View.GONE,
         val spotifyLoginDoneVisibility: Int = View.GONE,
-        val startRunningButtonVisibility: Int = View.GONE,
-        val startRunningDoneVisibility: Int = View.GONE
+        val startRunningButtonVisibility: Int = View.GONE
     )
 
     sealed class Effect {

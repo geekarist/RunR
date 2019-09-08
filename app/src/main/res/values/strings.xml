@@ -24,4 +24,5 @@
     <string name="check_setup_headline">Before using this application, you need to setup Spotify on your device. Please complete the following steps.</string>
     <string name="check_setup_lets_go">3. Let\'s go!</string>
     <string name="check_setup_start_running">Start Running</string>
+    <string name="check_setup_step_done">Done 👍</string>
 </resources>
