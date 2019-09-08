@@ -71,8 +71,6 @@ class RunningFragment : Fragment() {
             return
         }
 
-        val context = context ?: return
-
         Glide.with(this)
             .load(url)
             .timeout(10000)
