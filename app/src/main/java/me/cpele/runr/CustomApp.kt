@@ -66,7 +66,7 @@ class CustomApp : Application() {
             startRun = startRunUseCase
         )
     }
-    val checkSetupViewModelFactory = ViewModelFactory { CheckSetupViewModel() }
+    val checkSetupViewModelFactory = ViewModelFactory { CheckSetupViewModel(checkSetup) }
 
     override fun onCreate() {
         super.onCreate()

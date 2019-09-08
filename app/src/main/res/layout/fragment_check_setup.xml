@@ -22,6 +22,7 @@
         android:text="@string/check_setup_spotify_please_install" />
 
     <Button
+        android:id="@+id/check_setup_install_button"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,6 +38,7 @@
         android:text="@string/check_setup_spotify_please_login" />
 
     <Button
+        android:id="@+id/check_setup_login_button"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,6 +54,7 @@
         android:text="@string/check_setup_lets_go" />
 
     <Button
+        android:id="@+id/check_setup_start_button"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

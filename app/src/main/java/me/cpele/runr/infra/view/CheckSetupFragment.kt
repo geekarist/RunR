@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import kotlinx.android.synthetic.main.fragment_check_setup.*
 import me.cpele.runr.CustomApp
 import me.cpele.runr.R
 import me.cpele.runr.infra.Event
@@ -45,6 +46,14 @@ class CheckSetupFragment : Fragment() {
             this,
             Observer { event: Event<CheckSetupViewModel.Effect>? -> render(event) }
         )
+
+        viewModel.state.observe(this, Observer { state -> render(state) })
+    }
+
+    private fun render(state: CheckSetupViewModel.State) {
+        check_setup_install_button.visibility = state.spotifyInstallButtonVisibility
+        check_setup_login_button.visibility = state.spotifyLoginButtonVisibility
+        check_setup_start_button.visibility = state.startRunningButtonVisibility
     }
 
     private fun render(event: Event<CheckSetupViewModel.Effect>?) {
