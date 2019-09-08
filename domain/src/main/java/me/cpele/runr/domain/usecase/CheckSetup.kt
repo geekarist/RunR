@@ -9,7 +9,7 @@ class CheckSetup {
 
     enum class Status {
         PLAYER_NOT_INSTALLED,
-        PLAYER_NOT_LOGGED_IN,
+        PLAYER_NOT_CONNECTED,
         READY
     }
 }

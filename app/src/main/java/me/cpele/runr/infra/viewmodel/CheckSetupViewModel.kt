@@ -25,7 +25,7 @@ class CheckSetupViewModel(private val checkSetup: CheckSetup) : ViewModel() {
                 CheckSetup.Status.PLAYER_NOT_INSTALLED -> _state.dispatchValue(
                     _state.value?.copy(spotifyInstallButtonVisibility = View.VISIBLE)
                 )
-                CheckSetup.Status.PLAYER_NOT_LOGGED_IN -> _state.dispatchValue(
+                CheckSetup.Status.PLAYER_NOT_CONNECTED -> _state.dispatchValue(
                     _state.value?.copy(
                         spotifyInstallButtonVisibility = View.GONE,
                         spotifyLoginButtonVisibility = View.VISIBLE
