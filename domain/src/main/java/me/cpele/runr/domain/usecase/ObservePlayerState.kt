@@ -11,9 +11,14 @@ class ObservePlayerState(private val player: Player) {
     @Suppress("EXPERIMENTAL_API_USAGE")
     suspend fun execute(): ReceiveChannel<Response> = coroutineScope {
         player.observeStateForever().map {
-            Response(!it.isPaused, it.coverUrl)
+            Response(!it.isPaused, it.coverUrl, it.trackArtist, it.trackTitle)
         }
     }
 
-    data class Response(val isPlaying: Boolean, val coverUrl: String)
+    data class Response(
+        val isPlaying: Boolean,
+        val coverUrl: String,
+        val trackArtist: CharSequence,
+        val trackTitle: CharSequence
+    )
 }

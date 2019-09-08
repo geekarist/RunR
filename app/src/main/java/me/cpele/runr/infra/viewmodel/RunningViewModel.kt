@@ -55,6 +55,8 @@ class RunningViewModel(
                 val channel = observePlayerState.execute()
                 for (playerState in channel) {
                     val newValueWithCover = _state.value?.copy(
+                        trackArtist = playerState.trackArtist,
+                        trackTitle = playerState.trackTitle,
                         coverUriStr = playerState.coverUrl,
                         progressVisibility = View.INVISIBLE,
                         coverVisibility = View.VISIBLE
@@ -126,7 +128,9 @@ class RunningViewModel(
         val noTrackVisibility: Int = View.INVISIBLE,
         val progressVisibility: Int = View.VISIBLE,
         val scaleType: ImageView.ScaleType = ImageView.ScaleType.CENTER_CROP,
-        val isChangePaceEnabled: Boolean = false
+        val isChangePaceEnabled: Boolean = false,
+        val trackTitle: CharSequence = "-",
+        val trackArtist: CharSequence = "-"
     )
 
     sealed class Effect {

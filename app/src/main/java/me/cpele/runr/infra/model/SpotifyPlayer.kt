@@ -99,21 +99,6 @@ class SpotifyPlayer(
         }
     }
 
-    override suspend fun state(): Player.State? =
-        withContext(Dispatchers.IO) {
-            appRemote
-                ?.playerApi
-                ?.playerState
-                ?.await()
-                ?.let { result ->
-                    Player.State(
-                        result.data.isPaused,
-                        result.data.track.imageUri.raw,
-                        result.error
-                    )
-                }
-        }
-
     @Suppress("EXPERIMENTAL_API_USAGE")
     override fun observeStateForever(): ReceiveChannel<Player.State> =
         produce {
@@ -124,7 +109,15 @@ class SpotifyPlayer(
                 // Launch on single thread to prevent concurrency issues
                 persistScope.launch {
                     val url = playerState.track.imageUri.persist()
-                    send(Player.State(playerState.isPaused, url, null))
+                    send(
+                        Player.State(
+                            playerState.isPaused,
+                            url,
+                            null,
+                            playerState.track.artist.name,
+                            playerState.track.name
+                        )
+                    )
                 }
             }
             invokeOnClose { subscription?.cancel() }
