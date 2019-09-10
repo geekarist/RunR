@@ -93,13 +93,3 @@ class CustomApp : Application() {
         lateinit var instance: CustomApp
     }
 }
-
-
-fun Application.getUrl(@DrawableRes drawableRes: Int): String =
-    Uri.Builder()
-        .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
-        .authority(resources.getResourcePackageName(drawableRes))
-        .appendPath(resources.getResourceTypeName(drawableRes))
-        .appendPath(resources.getResourceEntryName(drawableRes))
-        .build()
-        .toString()
