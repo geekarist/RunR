@@ -37,6 +37,7 @@ class CheckSetupViewModel(
     private suspend fun check() {
         val response = checkSetup.execute()
         when (response.status) {
+            CheckSetup.Status.CHECK_ALREADY_DONE -> _effect.dispatchValue(Event(Effect.SetupCompleted))
             CheckSetup.Status.PLAYER_NOT_INSTALLED -> _state.dispatchValue(
                 _state.value?.copy(spotifyInstallButtonVisibility = View.VISIBLE)
             )

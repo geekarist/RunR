@@ -1,11 +1,20 @@
 package me.cpele.runr.domain.usecase
 
 import me.cpele.runr.domain.adapter.Player
+import me.cpele.runr.domain.adapter.SetupStatusRepository
 import java.util.concurrent.TimeoutException
 
-class CheckSetup(private val player: Player, private val waitForPlayer: WaitForPlayer) {
+class CheckSetup(
+    private val player: Player,
+    private val waitForPlayer: WaitForPlayer,
+    private val setupStatusRepository: SetupStatusRepository
+) {
 
     suspend fun execute(): Response {
+
+        if (setupStatusRepository.value == SetupStatusRepository.Status.DONE) {
+            return Response(Status.CHECK_ALREADY_DONE)
+        }
 
         if (!player.isInstalled) {
             return Response(Status.PLAYER_NOT_INSTALLED)
@@ -22,6 +31,8 @@ class CheckSetup(private val player: Player, private val waitForPlayer: WaitForP
             return Response(Status.PLAYER_NOT_CONNECTED)
         }
 
+        setupStatusRepository.value = SetupStatusRepository.Status.DONE
+
         return Response(Status.READY)
     }
 
@@ -30,6 +41,7 @@ class CheckSetup(private val player: Player, private val waitForPlayer: WaitForP
     enum class Status {
         PLAYER_NOT_INSTALLED,
         PLAYER_NOT_CONNECTED,
+        CHECK_ALREADY_DONE,
         READY
     }
 }

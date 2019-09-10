@@ -5,10 +5,7 @@ import com.google.gson.Gson
 import me.cpele.runr.domain.usecase.*
 import me.cpele.runr.infra.model.SpotifyAuthorizationAsync
 import me.cpele.runr.infra.model.SpotifyPlayer
-import me.cpele.runr.infra.model.data.PrefAuthResponseRepository
-import me.cpele.runr.infra.model.data.SharedPrefsPaceRepository
-import me.cpele.runr.infra.model.data.SpotifyPlaylistRepository
-import me.cpele.runr.infra.model.data.SpotifyTrackRepository
+import me.cpele.runr.infra.model.data.*
 import me.cpele.runr.infra.model.network.SpotifyService
 import me.cpele.runr.infra.viewmodel.CheckSetupViewModel
 import me.cpele.runr.infra.viewmodel.MainViewModel
@@ -48,6 +45,7 @@ class CustomApp : Application() {
         SpotifyPlaylistRepository(spotifyService, tokenProvider)
     private val paceRepository = SharedPrefsPaceRepository(this)
     private val player = SpotifyPlayer(this, tokenProvider)
+    private val setupStatusRepository = PrefSetupStatusRepository(this)
 
     ///////////////////////////////////////////////////////////////////////////
     // Inject use cases
@@ -60,7 +58,7 @@ class CustomApp : Application() {
     private val getPaceUseCase = GetPace(paceRepository)
     private val emitPlayerStateUseCase = ObservePlayerState(player)
     private val waitForPlayer = WaitForPlayer(player)
-    private val checkSetup = CheckSetup(player, waitForPlayer)
+    private val checkSetup = CheckSetup(player, waitForPlayer, setupStatusRepository)
     private val installPlayer = InstallPlayer(player)
     private val connectPlayer = ConnectPlayer(player, waitForPlayer)
 

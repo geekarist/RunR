@@ -68,7 +68,7 @@ class CheckSetupFragment : Fragment() {
     private fun render(event: Event<CheckSetupViewModel.Effect>?) {
         when (event?.value) {
             is CheckSetupViewModel.Effect.SetupCompleted ->
-                activityViewModel?.onSetupCompleted()
+                findNavController().navigate(R.id.action_checkSetupFragment_to_runningFragment)
         }
     }
 }
