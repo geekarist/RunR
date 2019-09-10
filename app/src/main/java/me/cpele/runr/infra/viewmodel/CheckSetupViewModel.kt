@@ -8,12 +8,14 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import me.cpele.runr.domain.usecase.CheckSetup
+import me.cpele.runr.domain.usecase.ConnectPlayer
 import me.cpele.runr.domain.usecase.InstallPlayer
 import me.cpele.runr.infra.Event
 
 class CheckSetupViewModel(
     private val checkSetup: CheckSetup,
-    private val installPlayer: InstallPlayer
+    private val installPlayer: InstallPlayer,
+    private val connectPlayer: ConnectPlayer
 ) : ViewModel() {
 
     private val _effect = MutableLiveData<Event<Effect>>()
@@ -63,6 +65,13 @@ class CheckSetupViewModel(
             installPlayer.execute()
             check()
             installJob = null
+        }
+    }
+
+    fun onConnectPlayer() {
+        viewModelScope.launch {
+            connectPlayer.execute()
+            check()
         }
     }
 

@@ -62,6 +62,7 @@ class CustomApp : Application() {
     private val waitForPlayer = WaitForPlayer(player)
     private val checkSetup = CheckSetup(player)
     private val installPlayer = InstallPlayer(player)
+    private val connectPlayer = ConnectPlayer(player, waitForPlayer)
 
     ///////////////////////////////////////////////////////////////////////////
     // Inject ViewModels
@@ -78,7 +79,7 @@ class CustomApp : Application() {
         )
     }
     val checkSetupViewModelFactory =
-        ViewModelFactory { CheckSetupViewModel(checkSetup, installPlayer) }
+        ViewModelFactory { CheckSetupViewModel(checkSetup, installPlayer, connectPlayer) }
 
     ///////////////////////////////////////////////////////////////////////////
     // Other
