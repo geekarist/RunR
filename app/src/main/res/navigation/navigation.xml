@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_check_setup">
         <action
             android:id="@+id/action_checkSetupFragment_to_runningFragment"
-            app:destination="@id/runningFragment" />
+            app:destination="@id/runningFragment"
+            app:popUpTo="@id/checkSetupFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
