@@ -14,6 +14,10 @@ class MainViewModel(private val player: Player) : ViewModel() {
     private val _effect = MutableLiveData<Event<Effect>>()
     val effect: LiveData<Event<Effect>> get() = _effect
 
+    init {
+        onInit()
+    }
+
     fun onInit() {
         viewModelScope.launch {
             try {

@@ -60,7 +60,7 @@ class CustomApp : Application() {
     private val getPaceUseCase = GetPace(paceRepository)
     private val emitPlayerStateUseCase = ObservePlayerState(player)
     private val waitForPlayer = WaitForPlayer(player)
-    private val checkSetup = CheckSetup(player)
+    private val checkSetup = CheckSetup(player, waitForPlayer)
     private val installPlayer = InstallPlayer(player)
     private val connectPlayer = ConnectPlayer(player, waitForPlayer)
 

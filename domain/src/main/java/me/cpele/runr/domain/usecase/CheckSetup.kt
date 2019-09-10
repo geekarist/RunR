@@ -1,16 +1,24 @@
 package me.cpele.runr.domain.usecase
 
 import me.cpele.runr.domain.adapter.Player
+import java.util.concurrent.TimeoutException
 
-class CheckSetup(private val player: Player) {
+class CheckSetup(private val player: Player, private val waitForPlayer: WaitForPlayer) {
 
-    fun execute(): Response {
+    suspend fun execute(): Response {
 
         if (!player.isInstalled) {
             return Response(Status.PLAYER_NOT_INSTALLED)
         }
 
-        if (!player.isConnected) {
+        val isTimeout = try {
+            waitForPlayer.execute(2)
+            false
+        } catch (e: TimeoutException) {
+            true
+        }
+
+        if (isTimeout || !player.isConnected) {
             return Response(Status.PLAYER_NOT_CONNECTED)
         }
 
