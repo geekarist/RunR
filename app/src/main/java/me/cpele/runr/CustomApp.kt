@@ -1,9 +1,6 @@
 package me.cpele.runr
 
 import android.app.Application
-import android.content.ContentResolver
-import android.net.Uri
-import androidx.annotation.DrawableRes
 import com.google.gson.Gson
 import me.cpele.runr.domain.usecase.*
 import me.cpele.runr.infra.model.SpotifyAuthorizationAsync
@@ -23,6 +20,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class CustomApp : Application() {
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Inject infrastructure
+    ///////////////////////////////////////////////////////////////////////////
 
     private val httpClient = OkHttpClient.Builder()
         .addInterceptor(
@@ -47,6 +48,11 @@ class CustomApp : Application() {
         SpotifyPlaylistRepository(spotifyService, tokenProvider)
     private val paceRepository = SharedPrefsPaceRepository(this)
     private val player = SpotifyPlayer(this, tokenProvider)
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Inject use cases
+    ///////////////////////////////////////////////////////////////////////////
+
     private val startRunUseCase =
         StartRun(trackRepository, playlistRepository, player)
     private val increasePaceUseCase =
@@ -54,7 +60,12 @@ class CustomApp : Application() {
     private val getPaceUseCase = GetPace(paceRepository)
     private val emitPlayerStateUseCase = ObservePlayerState(player)
     private val waitForPlayer = WaitForPlayer(player)
-    private val checkSetup = CheckSetup()
+    private val checkSetup = CheckSetup(player)
+    private val installPlayer = InstallPlayer(player)
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Inject ViewModels
+    ///////////////////////////////////////////////////////////////////////////
 
     val mainViewModelFactory = ViewModelFactory { MainViewModel(player) }
     val runningViewModelFactory = ViewModelFactory {
@@ -66,7 +77,12 @@ class CustomApp : Application() {
             startRun = startRunUseCase
         )
     }
-    val checkSetupViewModelFactory = ViewModelFactory { CheckSetupViewModel(checkSetup) }
+    val checkSetupViewModelFactory =
+        ViewModelFactory { CheckSetupViewModel(checkSetup, installPlayer) }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Other
+    ///////////////////////////////////////////////////////////////////////////
 
     override fun onCreate() {
         super.onCreate()

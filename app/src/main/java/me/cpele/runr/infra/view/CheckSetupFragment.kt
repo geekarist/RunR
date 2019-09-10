@@ -48,6 +48,8 @@ class CheckSetupFragment : Fragment() {
         )
 
         viewModel.state.observe(this, Observer { state -> render(state) })
+
+        check_setup_install_button.setOnClickListener { viewModel.onInstallPlayer() }
     }
 
     private fun render(state: CheckSetupViewModel.State) {

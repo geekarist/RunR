@@ -1,7 +1,9 @@
 package me.cpele.runr.infra.model
 
 import android.app.Application
+import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import androidx.annotation.WorkerThread
 import androidx.core.net.toUri
 import com.spotify.android.appremote.api.ConnectionParams
@@ -41,6 +43,17 @@ class SpotifyPlayer(
     private var _isConnected: Boolean = false
     override val isConnected: Boolean
         get() = _isConnected
+
+    override val isInstalled: Boolean
+        get() = SpotifyAppRemote.isSpotifyInstalled(application)
+
+    override suspend fun install() {
+        val pkg = "com.spotify.music"
+        val url = "http://play.google.com/store/apps/details?id=$pkg"
+        val uri = Uri.parse(url)
+        val intent = Intent(Intent.ACTION_VIEW, uri).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        application.startActivity(intent)
+    }
 
     override suspend fun play(playlist: Playlist) {
         startPlaying(playlist)

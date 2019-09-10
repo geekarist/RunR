@@ -5,12 +5,14 @@ import me.cpele.runr.domain.api.model.Playlist
 
 interface Player {
 
+    val isInstalled: Boolean
     val isConnected: Boolean
 
     suspend fun connect()
     suspend fun play(playlist: Playlist)
     fun observeStateForever(): ReceiveChannel<State>
     fun disconnect()
+    suspend fun install()
 
     data class State(
         val isPaused: Boolean,
