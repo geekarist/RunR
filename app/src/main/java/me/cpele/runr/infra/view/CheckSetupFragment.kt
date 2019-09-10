@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_check_setup.*
 import me.cpele.runr.CustomApp
 import me.cpele.runr.R
@@ -51,6 +52,9 @@ class CheckSetupFragment : Fragment() {
 
         check_setup_install_button.setOnClickListener { viewModel.onInstallPlayer() }
         check_setup_login_button.setOnClickListener { viewModel.onConnectPlayer() }
+        check_setup_start_button.setOnClickListener {
+            findNavController().navigate(R.id.action_checkSetupFragment_to_runningFragment)
+        }
     }
 
     private fun render(state: CheckSetupViewModel.State) {
