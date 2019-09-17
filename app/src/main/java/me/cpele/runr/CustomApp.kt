@@ -72,8 +72,8 @@ class CustomApp : Application() {
             changePace = increasePaceUseCase,
             getPace = getPaceUseCase,
             observePlayerState = emitPlayerStateUseCase,
-            waitForPlayer = waitForPlayer,
-            startRun = startRunUseCase
+            startRun = startRunUseCase,
+            connectPlayer = connectPlayer
         )
     }
     val checkSetupViewModelFactory =

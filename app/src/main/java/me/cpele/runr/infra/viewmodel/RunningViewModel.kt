@@ -15,8 +15,8 @@ class RunningViewModel(
     private val changePace: ChangePace,
     private val getPace: GetPace,
     private val observePlayerState: ObservePlayerState,
-    private val waitForPlayer: WaitForPlayer,
-    private val startRun: StartRun
+    private val startRun: StartRun,
+    private val connectPlayer: ConnectPlayer
 ) : ViewModel() {
 
     private val _effect = MutableLiveData<Event<Effect>>()
@@ -32,7 +32,7 @@ class RunningViewModel(
 
         viewModelScope.launch {
             try {
-                waitForPlayer.execute()
+                connectPlayer.execute()
 
                 // Ready
                 _state.dispatchValue(
