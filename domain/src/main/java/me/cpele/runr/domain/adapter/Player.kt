@@ -14,6 +14,7 @@ interface Player {
     fun observeStateForever(): ReceiveChannel<State>
     fun disconnect()
     suspend fun install()
+    suspend fun pause()
 
     data class State(
         val isPaused: Boolean,

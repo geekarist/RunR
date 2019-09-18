@@ -54,7 +54,7 @@ class CustomApp : Application() {
     private val startRunUseCase =
         StartRun(trackRepository, playlistRepository, player)
     private val increasePaceUseCase =
-        ChangePace(paceRepository, startRunUseCase)
+        ChangePace(paceRepository, startRunUseCase, player)
     private val getPaceUseCase = GetPace(paceRepository)
     private val emitPlayerStateUseCase = ObservePlayerState(player)
     private val waitForPlayer = WaitForPlayer(player)

@@ -64,6 +64,10 @@ class SpotifyPlayer(
         startPlaying(playlist)
     }
 
+    override suspend fun pause() {
+        withContext(coroutineContext) { appRemote?.playerApi?.pause()?.await() }
+    }
+
     override suspend fun connect() {
         ensureUserConnected()
         ensureRemoteConnected()
