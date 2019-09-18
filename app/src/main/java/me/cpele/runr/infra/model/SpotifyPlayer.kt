@@ -55,6 +55,11 @@ class SpotifyPlayer(
         application.startActivity(intent)
     }
 
+    override suspend fun isPlaying(): Boolean = withContext(coroutineContext) {
+        appRemote?.isConnected == true
+                && appRemote?.playerApi?.playerState?.await()?.data?.isPaused == false
+    }
+
     override suspend fun play(playlist: Playlist) {
         startPlaying(playlist)
     }

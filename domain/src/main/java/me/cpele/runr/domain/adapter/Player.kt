@@ -7,6 +7,7 @@ interface Player {
 
     val isInstalled: Boolean
     val isConnected: Boolean
+    suspend fun isPlaying(): Boolean
 
     suspend fun connect()
     suspend fun play(playlist: Playlist)

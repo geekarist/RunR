@@ -10,6 +10,8 @@ class StartRun(
     private val player: Player
 ) {
     suspend fun execute(pace: Int): Response {
+        if (player.isPlaying()) return Response.Success
+
         val tracks = trackRepository.findByPace(pace)
         return if (tracks.isNotEmpty()) {
             val playlist = playlistRepository.create(tracks)
